@@ -1,0 +1,10 @@
+exec_completed = 0x0802E33D;
+pokemon_getattr = 0x0803FBE9;
+pokemon_setattr = 0x0804037D;
+recalc_stats = 0x0803E47D;
+gf_strcat = 0x08008DA5;
+battle_show_message = 0x080D87BD;
+buffer_str = 0x080D77F5;
+move_anim_start = 0x080341D9;
+ability_something = 0x08019F19;
+ability_something_2 = 0x08014CD9;

@@ -1,0 +1,5 @@
+*.sgm
+*.sav
+*.gba
+build
+*.gch

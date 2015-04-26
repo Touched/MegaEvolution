@@ -1,0 +1,31 @@
+.text
+
+.global str_apostrophe_s
+str_apostrophe_s: 
+	.byte 0xB4 @ '
+	.byte 0xE7 @ s
+	.byte 0x00 
+	.byte 0xFF
+	
+str_is_reacting_to:
+	.byte 0x00 
+	.byte 0xDD @ i
+	.byte 0xE7 @ s
+	.byte 0x00 @ 
+	.byte 0xE6 @ r
+	.byte 0xD9 @ e
+	.byte 0xD5 @ a
+	.byte 0xD7 @ c
+	.byte 0xE8 @ t
+	.byte 0xDD @ i
+	.byte 0xE2 @ n
+	.byte 0xDB @ g
+	.byte 0xFE @ \n
+	.byte 0xE8 @ t
+	.byte 0xE3 @ o
+	.byte 0xFF
+
+str_end:
+	.byte 0xAB @ !
+	.byte 0xFB
+	.byte 0xFF
