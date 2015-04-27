@@ -37,6 +37,43 @@ void command() {
 	//exec_completed();
 }
 
+void ability_fix_cb() {
+	bxcb *b_c = (bxcb*) 0x03004F84;
+	bxcb *bc_backup = (bxcb*) 0x02023D78;
+	
+	// Call the function that does all the work
+	((bxcb) (0x801385C + 1))();
+	
+	// If this condition is true, the above callback finished and overwrote b_c
+	// Restore the back up in this case
+	if (*b_c == 0x08014040 + 1) {
+		*b_c = *bc_backup;
+	}
+}
+
+void ability_fix() {
+	// Sets b_c to a callback that calls ability_something
+	// Fixes abilities that run on enter (drought, etc.)
+	// Thanks daniilS!
+	u8 **dp08_ptr = (u8**) 0x02023FE8;
+	u8 *dp08 = *dp08_ptr;
+	bxcb *b_c = (bxcb*) 0x03004F84;
+	
+	// Some unused word in the memory - pick any
+	bxcb *bc_backup = (bxcb*) 0x02023D78;
+	
+	*(dp08 + 0x4C) = 0;
+	*(dp08 + 0xD9) = 0;
+	*(dp08 + 0xB6) = 0;
+	
+	// Fix bug introduced by this - the callback we need resets b_c
+	// Remember the old b_c
+	*bc_backup = *b_c;
+	
+	// Use wrapper function
+	*b_c = ability_fix_cb;
+}
+
 void set_species(u16 index) {
 	u16 species = 3;
 	u8 *data = get_pokemon_data();
@@ -64,8 +101,9 @@ void set_species(u16 index) {
 	// Megas only have one ability; don't bother with the second one
 	bdata->ability_id = base_stats[index].ability1;
 	
-	// FIXME: Abilities that activate when switching (intimidate, weather abilities, etc.) 
+	// Fix abilities that activate when switching (intimidate, weather abilities, etc.) 
 	// do not work
+	ability_fix();
 	
 	// Type changes
 	bdata->type1 = base_stats[index].type1;
