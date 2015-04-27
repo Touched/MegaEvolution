@@ -114,40 +114,56 @@ char *item_name(u16 index) {
 	return (char *) (0x083DB028 + index * 0x2C);
 }
 
-char str_apostrophe_s[] = {0xB4, 0xE7, 0x00, 0xFF};
-char str_middle[] = {0x00, 0xDD, 0xE7, 0x00, 0xE6, 0xD9, 0xD5, 0xD7, 0xE8, 0xDD, 0xE2, 0xDB, 0xFE, 0xE8, 0xE3, 0x00, 0xFF};
-char str_end[] = {0xAB, 0xFB, 0xFF};
+char str_mega_evo[] = {
+	0xFD, 0x0, 0xB4, 0xE7, 0x00, 0xFD, 0x1, // []'s []
+	0x00, 0xDD, 0xE7, 0x00, 0xE6, 0xD9, 0xD5, 0xD7, 0xE8, 0xDD, 0xE2, 0xDB, 0xFE, 0xE8, 0xE3, 0x00, // is reacting to
+	0xFD, 0x2, 0xB4, 0xE7, 0x00, 0xFD, 0x3,  // []'s []
+	0xAB, 0xFB, 0xFF // !
+};
 
+void special_strcpy(u8 *dest, u8 *src);
 void prepare_message(char *buf) {
-	// Empty the buffer
-	*buf = 0xFF;
-	
-	char buffer[10];
+	special_strcpy((u8*) buf, (u8*) str_mega_evo);
+}
+
+void special_strcpy(u8 *dest, u8 *src) {
+	u8 ch;
 	u8 *data = get_pokemon_data();
+	char buffer[10];
+	u8* buf;
 	
-	// Add the nickname to the string
-	pokemon_getattr(data, 2, (u8*) buffer);
-	gf_strcat(buf, buffer);
-	gf_strcat(buf, str_apostrophe_s);
+	while ((ch = *src++) != 0xFF) {
+		// Do something different for variables
+		if (ch == 0xFD) {
+			switch (*src++) {
+			// Pokemon's nickname
+			case 0:
+				buf = (u8*) buffer;
+				pokemon_getattr(data, 2, buffer);
+				break;
+			// Held item
+			case 1:
+				buf = item_name(0x115);
+				break;
+			// Trainer's name
+			case 2:
+				buf = *((u8**) 0x0300500C);
+				break;
+			// Trainer's accessory
+			case 3:
+				buf = item_name(0x161);
+				break;
+			}
+			
+			// Copy smaller buffer into string
+			while ((*dest++ = *buf++) != 0xFF);
+			dest--;
+		} else {
+			*dest++ = ch;
+		}
+	}
 	
-	// Add item name
-	// TODO: Read from held item
-	gf_strcat(buf, item_name(0x115));
-	
-	// Add "is reacting to"
-	gf_strcat(buf, str_middle);
-	
-	// Player's name (first entry in the save block)
-	u8 **saveblock2 = (u8**) 0x0300500C;
-	gf_strcat(buf, *saveblock2);
-	gf_strcat(buf, str_apostrophe_s);
-	
-	// Add item name - player's accessory; probably a key item
-	// TODO: Read from table or variable I'd guess
-	gf_strcat(buf, item_name(0x161));
-	
-	// Exclamation mark and red arrow
-	gf_strcat(buf, str_end);
+	*dest = 0xFF;
 }
 
 void show_message(char *buf) {
