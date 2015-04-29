@@ -8,3 +8,4 @@ buffer_str = 0x080D77F5;
 move_anim_start = 0x080341D9;
 ability_something = 0x08019F19;
 ability_something_2 = 0x08014CD9;
+a_pressed_maybe = 0x08002E65;
