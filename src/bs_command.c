@@ -25,16 +25,20 @@ void animation_script_start(u8 *script, u8 attacker, u8 defender);
 
 extern void play_mega_evolution(u8 attacker, u8 defender);
 
+evolution *get_evolution_data() {
+	u8 *buffer_A = (u8*) 0x02022BC4;
+	return (evolution*) (buffer_A[3] | (buffer_A[4] << 8) | (buffer_A[5] << 16) | (buffer_A[6] << 24));
+}
+
 void wait_for_message();
 void command() {
 	char *buffer = (char*) 0x0202298C;
 	
 	// Read species from the buffer
-	u8 *buffer_A = (u8*) 0x02022BC4;
-	evolution *evo = (evolution*) (buffer_A[3] | (buffer_A[4] << 8) | (buffer_A[5] << 16) | (buffer_A[6] << 24));
-
+	evolution *evo = get_evolution_data();
+	
 	set_species(evo->species);
-	special_strcpy((u8*) buffer, (u8*) str_mega_evo);
+	special_strcpy((u8*) buffer, (u8*) str_before[evo->unknown]);
 	show_message(buffer);
 		
 	set_b_x_callback((bxcb) wait_for_message);
@@ -184,9 +188,11 @@ void wait_transformation_message() {
 
 void transformation_message() {
 	char *buffer = (char*) 0x0202298C;
+	
+	evolution *evo = get_evolution_data();
 
 	// TODO: Post transformation message
-	special_strcpy((u8*) buffer, (u8*) str_post_mega);
+	special_strcpy((u8*) buffer, (u8*) str_after[evo->unknown]);
 	show_message(buffer);
 	
 	set_b_x_callback((bxcb) wait_transformation_message);
