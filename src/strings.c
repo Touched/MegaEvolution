@@ -14,7 +14,7 @@ char str_mega_evo[] = {
 
 char str_post_mega[] = {
 	PC_BUFFER(0), PC_SPACE, PC_M, PC_e, PC_g, PC_a, PC_SPACE, PC_E, PC_v, PC_o,
-	PC_l, PC_v, PC_e, PC_d, PC_SPACE, PC_i, PC_n, PC_t, PC_o, PC_SPACE, PC_M,
-	PC_e, PC_g, PC_a, PC_SPACE, PC_BUFFER(0), PC_EXCLAMATION, PC_END
+	PC_l, PC_v, PC_e, PC_d, PC_SPACE, PC_i, PC_n, PC_t, PC_o, PC_SPACE, 0xFE, 
+	PC_M, PC_e, PC_g, PC_a, PC_SPACE, PC_BUFFER(0), PC_EXCLAMATION, PC_END
 };
 

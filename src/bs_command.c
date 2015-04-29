@@ -8,6 +8,7 @@
 #include "battle.h"
 #include "pokemon.h"
 #include "strings.h"
+#include "text.h"
 
 void set_species(u16 index);
 void show_message(char *buf);
