@@ -1,7 +1,6 @@
 // Mega evolution helper functions
 
-#include "evo.h"
-#include "battle.h"
+#include "mega.h"
 
 // Return all the evolution data, null otherwise
 evolution *can_mega_evolve(battle_data *pokemon) {
@@ -37,8 +36,11 @@ void build_cmdbuf_mega(u8 arg, u16 len, u8 **data);
 void mark_buffer_for_execution(u8 arg);
 
 void handle_mega_evolution() {
-	*((u8*) 0x02023BC4) = 0;
+	if (!megadata->trigger[0]) return;
+	megadata->trigger[0] = 0;
 
+	*((u8*) 0x02023BC4) = 0;
+	
 	battle_data *bdata = (battle_data *) 0x02023BE4;
 	evolution *evo = can_mega_evolve(bdata);
 	

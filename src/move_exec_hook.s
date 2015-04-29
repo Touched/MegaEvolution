@@ -4,11 +4,9 @@
 .align 2
 
 move_hook:
-	ldr r2, ram_loc
-	ldrb r3, [r2]
-	
-	cmp r3, #0x22
-	bne do_once
+	push {r0-r3}
+	bl handle_mega_evolution
+	pop {r0-r3}
 
 return:
 	ldrb r0, [r0]
