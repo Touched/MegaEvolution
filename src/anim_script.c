@@ -14,12 +14,18 @@ u8 anim_script2[] = {
 	8
 };
 
+// 08071E60 - could be playing the cry
 u8 anim_script[] = {
 	3,
 	ANIM_LONG(0x080F1420 + 1),
 	2,
 	1,
 	ANIM_SHORT(1),
+	
+	//4, 10,
+	
+	// Play cry
+	// 0x3, ANIM_LONG(0x80DD148 + 1), 1, 2, ANIM_SHORT(0), ANIM_SHORT(0xFF),
 	8
 };
 

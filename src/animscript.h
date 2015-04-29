@@ -17,6 +17,11 @@
 #define ANIM_LOAD_GRAPHICS(a, b) 0, ANIM_SHORT(a), ANIM_SHORT(b)
 // 1
 // 2
-#define ANIM_CALLASM(a, b, c) ANIM_LONG(a), b, c
+
+// word:			funcptr
+// byte:			priority (of task)
+// byte:			length
+// short[lenth]:	data
+#define ANIM_CALLASM(a, b, c) ANIM_LONG(a), b, c // 17 bytes
 	
 #endif

@@ -109,6 +109,8 @@ void set_species(u16 index) {
 	// Update battle data
 	battle_data *bdata = get_battle_data();
 	
+	bdata->species = species;
+	
 	// Update stats
 	for (i = 0; i < 5; ++i) {
 		bdata->stats[i] = pokemon_getattr(data, 0x3B + i, 0);
