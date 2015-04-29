@@ -158,10 +158,22 @@ void special_strcpy(u8 *dest, u8 *src) {
 	*dest = 0xFF;
 }
 
-void wait_transformation_message() {
-	if (!a_pressed_maybe(0)) {
-		// TODO: Small timeout
+void delay_before_end() {
+	u16 *timer = (u16*) 0x02023D7E;
+	
+	if (*timer > 0) {
+		(*timer)--;
+	} else {
 		exec_completed();
+	}
+}
+
+void wait_transformation_message() {
+	u16 *timer = (u16*) 0x02023D7E;
+
+	if (!a_pressed_maybe(0)) {
+		*timer = 0x30;
+		set_b_x_callback((bxcb) delay_before_end);
 	}
 }
 
@@ -182,14 +194,27 @@ void wait_for_animation() {
 	}
 }
 
+void delay_for_animation() {
+	// Unused halfword - just pick any piece of padding
+	u16 *timer = (u16*) 0x02023D7E;
+	
+	if (*timer > 0) {
+		(*timer)--;
+	} else {
+		play_mega_evolution(0, 1);
+		set_b_x_callback((bxcb) wait_for_animation);
+	}
+}
+
 // Wait for message to finish printing before displaying the animation
 void wait_for_message() {
 	// a_pressed_maybe is called immediately after the message is finished
 	// rendering
-	// TODO: Some sort of timeout
+	u16 *timer = (u16*) 0x02023D7E;
+	
 	if (!a_pressed_maybe(0)) {
-		play_mega_evolution(0, 1);
-		set_b_x_callback((bxcb) wait_for_animation);
+		*timer = 0x30;
+		set_b_x_callback((bxcb) delay_for_animation);
 	}
 }
 
