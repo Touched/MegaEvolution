@@ -30,6 +30,13 @@ evolution *get_evolution_data() {
 	return (evolution*) (buffer_A[3] | (buffer_A[4] << 8) | (buffer_A[5] << 16) | (buffer_A[6] << 24));
 }
 
+battle_data *get_battle_data() {
+	// TODO: Calculate correctnessssssss
+	return (battle_data *) 0x02023BE4 + sizeof(battle_data) * 0; 
+}
+
+
+
 void wait_for_message();
 void command() {
 	char *buffer = (char*) 0x0202298C;
@@ -98,8 +105,7 @@ void set_species(u16 index) {
 	// TODO: Update healthbar? Mega's shouldn't change health so theres no need
 	
 	// Update battle data
-	// TODO: Calculate correctnessssssss
-	battle_data *bdata = (battle_data *) 0x02023BE4 + sizeof(battle_data) * 0; 
+	battle_data *bdata = get_battle_data();
 	
 	// Update stats
 	for (i = 0; i < 5; ++i) {
@@ -133,6 +139,8 @@ void special_strcpy(u8 *dest, u8 *src) {
 	char buffer[10];
 	u8* buf;
 	
+	battle_data *bdata = get_battle_data();
+	
 	while ((ch = *src++) != 0xFF) {
 		// Do something different for variables
 		if (ch == 0xFD) {
@@ -144,7 +152,7 @@ void special_strcpy(u8 *dest, u8 *src) {
 				break;
 			// Held item
 			case 1:
-				buf = item_name(0x115);
+				buf = item_name(bdata->held_item);
 				break;
 			// Trainer's name
 			case 2:
