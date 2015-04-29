@@ -45,6 +45,8 @@ void command() {
 	evolution *evo = get_evolution_data();
 	
 	set_species(evo->species);
+	
+	// TODO: Support no message (for primals)
 	special_strcpy((u8*) buffer, (u8*) str_before[evo->unknown]);
 	show_message(buffer);
 		
@@ -156,10 +158,12 @@ void special_strcpy(u8 *dest, u8 *src) {
 				break;
 			// Trainer's name
 			case 2:
+				// TODO: Load trainer name if enemy is mega evolving
 				buf = *((u8**) 0x0300500C);
 				break;
 			// Trainer's accessory
 			case 3:
+				// TODO: Support loading accessories from a table or something
 				buf = item_name(0x161);
 				break;
 			}
