@@ -9,3 +9,5 @@ move_anim_start = 0x080341D9;
 ability_something = 0x08019F19;
 ability_something_2 = 0x08014CD9;
 a_pressed_maybe = 0x08002E65;
+build_cmdbuf_mega = 0x0800E801;
+mark_buffer_for_execution = 0x08017249;

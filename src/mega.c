@@ -32,3 +32,19 @@ evolution *can_mega_evolve(battle_data *pokemon) {
 }
 
 // TODO: Same as above but for primals
+
+void build_cmdbuf_mega(u8 arg, u16 len, u8 **data);
+void mark_buffer_for_execution(u8 arg);
+
+void handle_mega_evolution() {
+	*((u8*) 0x02023BC4) = 0;
+
+	battle_data *bdata = (battle_data *) 0x02023BE4;
+	evolution *evo = can_mega_evolve(bdata);
+	
+	// Null check
+	if (evo) {
+		build_cmdbuf_mega(0, 4, (u8**) &evo);
+		mark_buffer_for_execution(0);
+	}
+}
