@@ -9,6 +9,7 @@
 #include "pokemon.h"
 #include "strings.h"
 #include "text.h"
+#include "evo.h"
 
 void set_species(u16 index);
 void show_message(char *buf);
@@ -27,8 +28,12 @@ extern void play_mega_evolution(u8 attacker, u8 defender);
 void wait_for_message();
 void command() {
 	char *buffer = (char*) 0x0202298C;
+	
+	// Read species from the buffer
+	u8 *buffer_A = (u8*) 0x02022BC4;
+	evolution *evo = (evolution*) (buffer_A[3] | (buffer_A[4] << 8) | (buffer_A[5] << 16) | (buffer_A[6] << 24));
 
-	set_species(150);
+	set_species(evo->species);
 	special_strcpy((u8*) buffer, (u8*) str_mega_evo);
 	show_message(buffer);
 		
@@ -79,7 +84,7 @@ void ability_fix() {
 }
 
 void set_species(u16 index) {
-	u16 species = 3;
+	u16 species = index;
 	u8 *data = get_pokemon_data();
 	u8 i;
 	
