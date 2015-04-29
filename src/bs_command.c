@@ -7,6 +7,7 @@
 #include "common.h"
 #include "battle.h"
 #include "pokemon.h"
+#include "strings.h"
 
 void set_species(u16 index);
 void show_message(char *buf);
@@ -22,19 +23,15 @@ void animation_script_start(u8 *script, u8 attacker, u8 defender);
 
 extern void play_mega_evolution(u8 attacker, u8 defender);
 
-char str_mega_evo[] = {
-	0xFD, 0x0, 0xB4, 0xE7, 0x00, 0xFD, 0x1, // []'s []
-	0x00, 0xDD, 0xE7, 0x00, 0xE6, 0xD9, 0xD5, 0xD7, 0xE8, 0xDD, 0xE2, 0xDB, 0xFE, 0xE8, 0xE3, 0x00, // is reacting to
-	0xFD, 0x2, 0xB4, 0xE7, 0x00, 0xFD, 0x3,  // []'s []
-	0xAB, 0xFF // !
-};
-
+void wait_for_message();
 void command() {
 	char *buffer = (char*) 0x0202298C;
 
 	set_species(150);
 	special_strcpy((u8*) buffer, (u8*) str_mega_evo);
 	show_message(buffer);
+		
+	set_b_x_callback((bxcb) wait_for_message);
 	
 	//animation_script_start((u8*) 0x081D6594, 0, 1);
 	
@@ -160,8 +157,6 @@ void special_strcpy(u8 *dest, u8 *src) {
 	*dest = 0xFF;
 }
 
-u8 a_pressed_maybe(u8);
-
 void wait_transformation_message() {
 	if (!a_pressed_maybe(0)) {
 		// TODO: Small timeout
@@ -173,7 +168,7 @@ void transformation_message() {
 	char *buffer = (char*) 0x0202298C;
 
 	// TODO: Post transformation message
-	special_strcpy((u8*) buffer, (u8*) str_mega_evo);
+	special_strcpy((u8*) buffer, (u8*) str_post_mega);
 	show_message(buffer);
 	
 	set_b_x_callback((bxcb) wait_transformation_message);
@@ -207,8 +202,6 @@ void show_message(char *buf) {
 	// Display the message
 	// TODO: Find out what second arg does
 	battle_show_message(buf, 0x40);
-	
-	set_b_x_callback((bxcb) wait_for_message);
 }
 
 void set_b_x_callback(bxcb callback) {
