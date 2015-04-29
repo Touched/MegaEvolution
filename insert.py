@@ -87,5 +87,6 @@ with open('test.gba', 'rb+') as rom:
 		
 	hook(rom, table['command'], 0x033224, 2)
 	hook(rom, table['move_hook'], 0x01D040, 2)
+	hook(rom, table['move_button_hook'], 0x02EC10, 0)
 	print(table)
     

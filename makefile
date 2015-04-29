@@ -11,8 +11,8 @@ CXXFLAGS=-mthumb -mthumb-interwork -mcpu=arm7tdmi -mlong-calls -march=armv4t -Wa
 ASFLAGS=-mthumb
 LDFLAGS=-z muldefs
 
-all: command  move_exec_hook anim strings mega
-	$(LD) $(LDFLAGS) -T linker.lsc -T BPRE.sym -o build/linked.o build/bs_command.o build/anim.o build/anim_script.o build/move_exec_hook.o build/strings.o build/mega.o
+all: command  move_exec_hook anim strings mega button
+	$(LD) $(LDFLAGS) -T linker.lsc -T BPRE.sym -o build/linked.o build/bs_command.o build/anim.o build/anim_script.o build/move_exec_hook.o build/strings.o build/mega.o build/move_menu_hook.o build/button.o
 	$(OBJCOPY) -O binary build/linked.o build/output.bin
 
 command:
@@ -30,5 +30,9 @@ mega:
 
 move_exec_hook:
 	$(AS) $(AFLAGS) -c src/move_exec_hook.s -o build/move_exec_hook.o
+	$(CC) $(CFLAGS) -c src/button.c -o build/button.o
+	
+button:
+	$(AS) $(AFLAGS) -c src/move_menu_hook.s -o build/move_menu_hook.o
 
 
