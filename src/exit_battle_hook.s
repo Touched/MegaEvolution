@@ -3,10 +3,6 @@
 .align 2
 
 exit_battle_hook:
-	@ Loop through party
-	@ Check if mega'd
-	@ Revert
-	
 	bl revert_megas
 
 	ldr r1, =(0x03004F84)
