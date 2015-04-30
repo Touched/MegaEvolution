@@ -8,5 +8,6 @@ void gf_strcat(char *dest, char *src);
 void battle_show_message(char *msg, u8 arg);
 void ability_something_2(); 
 void ability_something(u8,u8,u8); 
+void recalc_stats(u8 *data);
 
 #endif

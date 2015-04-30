@@ -86,7 +86,9 @@ with open('test.gba', 'rb+') as rom:
 		table[entry] += where
 		
 	hook(rom, table['command'], 0x033224, 2)
+	hook(rom, table['command'], 0x038A50, 2) 
 	hook(rom, table['move_hook'], 0x01D040, 2)
 	hook(rom, table['move_button_hook'], 0x02EC10, 0)
+	hook(rom, table['exit_battle_hook'], 0x0159DC, 0)
 	print(table)
     
