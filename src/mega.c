@@ -12,6 +12,11 @@ evolution *can_mega_evolve(battle_data *pokemon) {
 	
 	for (i = 0; i <= *evos_per_poke; ++i) {
 		if (evolutions[i].type == MEGA_EVOLUTION) {
+			// Ignore reverison information
+			if (evolutions[i].argument == 0) {
+				continue;
+			}
+		
 			// Check for held item
 			if (evolutions[i].unknown == MEGA_VARIANT_STANDARD) {
 				if (evolutions[i].argument == pokemon->held_item) {
