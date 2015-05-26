@@ -11,4 +11,5 @@ ability_something_2 = 0x08014CD9;
 a_pressed_maybe = 0x08002E65;
 build_cmdbuf_mega = 0x0800E801;
 mark_buffer_for_execution = 0x08017249;
-audio_play = 0x080722CD;
+play_sound = 0x080722CD;
+play_song = 0x08071A75;
