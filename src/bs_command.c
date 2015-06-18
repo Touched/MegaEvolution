@@ -32,7 +32,7 @@ evolution *get_evolution_data() {
 
 battle_data *get_battle_data() {
 	// TODO: Calculate correctnessssssss
-	return (battle_data *) 0x02023BE4 + sizeof(battle_data) * *b_active_side; 
+	return (battle_data *) (0x02023BE4 + sizeof(battle_data) * *b_current_bank);
 }
 
 void wait_for_message();
@@ -42,7 +42,7 @@ void command() {
 	// Read species from the buffer
 	evolution *evo = get_evolution_data();
 	
-	//set_species(evo->species);
+	set_species(evo->species);
 	
 	// TODO: Support no message (for primals)
 	special_strcpy((u8*) buffer, (u8*) str_before[evo->unknown]);
@@ -230,7 +230,7 @@ void delay_for_animation() {
 		(*timer)--;
 	} else {
 		*timer = 0xFF;
-		play_mega_evolution(0, 1);
+		play_mega_evolution(*b_current_bank, 1);
 		set_b_x_callback((bxcb) wait_for_animation);
 	}
 }
@@ -261,8 +261,6 @@ void show_message(char *buf) {
 
 void set_b_x_callback(bxcb callback) {
 	bxcb *bx = ((bxcb*) 0x03004FE0);
-	//u8 *b_active_side = (u8*) 0x02023BC4;
-	//bx += *b_active_side << 2;
 	bx[*b_current_bank] = callback;
 }
 
