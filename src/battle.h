@@ -30,4 +30,10 @@ typedef struct battle_data
 	u32  otid;
 } battle_data;
 
+u8 *b_active_side = (u8*) 0x02023BC4;
+u8 *b_attacker = (u8*) 0x02023D6B;
+u8 *b_defender = (u8*) 0x02023D6C;
+u8 *b_current_bank = (u8*) 0x02023D6F;
+battle_data *bdata = (battle_data *) (0x02023BE4);
+
 #endif

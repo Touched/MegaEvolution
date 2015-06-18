@@ -2,6 +2,7 @@
 
 #include "mega.h"
 #include "common.h"
+#include "battle.h"
 #include "pokemon.h"
 
 // Return all the evolution data, null otherwise
@@ -43,13 +44,13 @@ void build_cmdbuf_mega(u8 arg, u16 len, u8 **data);
 void mark_buffer_for_execution(u8 arg);
 
 void handle_mega_evolution() {
-	if (!megadata->trigger[0]) return;
-	megadata->trigger[0] = 0;
+	if (!megadata->trigger[*b_current_bank]) return;
+	megadata->trigger[*b_current_bank] = 0;
 
-	*((u8*) 0x02023BC4) = 0;
+	*b_active_side = *b_current_bank;
 	
-	battle_data *bdata = (battle_data *) 0x02023BE4;
-	evolution *evo = can_mega_evolve(bdata);
+	battle_data *data = &bdata[*b_active_side];
+	evolution *evo = can_mega_evolve(data);
 	
 	// Null check
 	if (evo) {

@@ -91,5 +91,11 @@ with open('test.gba', 'rb+') as rom:
 	hook(rom, table['move_button_hook'], 0x02EC10, 0)
 	hook(rom, table['exit_battle_hook'], 0x0159DC, 0)
 	hook(rom, table['faint_hook'], 0x0326C4, 3)
-	print(table)
+	
+	width = max(len(key) for key in table.keys())
+	
+	for key in sorted(table.keys()):
+		print(('{:' + str(width) + '} {:08X}').format(key + ':', table[key] + 0x08000000))
+	
+	
     

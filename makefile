@@ -6,7 +6,7 @@ OBJCOPY=arm-none-eabi-objcopy
 OBJDUMP=arm-none-eabi-objcopy
 
 DEFINES=-DBPRE -DSOFTWARE_VERSION=0
-CFLAGS=-mthumb -mthumb-interwork -mcpu=arm7tdmi -mlong-calls -march=armv4t -Wall -O2 $(DEFINES)
+CFLAGS=-mthumb -mthumb-interwork -mcpu=arm7tdmi -fno-inline -mlong-calls -march=armv4t -Wall -O2 $(DEFINES)
 CXXFLAGS=-mthumb -mthumb-interwork -mcpu=arm7tdmi -mlong-calls -march=armv4t -Wall -O2 $(DEFINES)
 ASFLAGS=-mthumb
 LDFLAGS=-z muldefs
