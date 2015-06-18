@@ -35,8 +35,6 @@ battle_data *get_battle_data() {
 	return (battle_data *) 0x02023BE4 + sizeof(battle_data) * 0; 
 }
 
-
-
 void wait_for_message();
 void command() {
 	char *buffer = (char*) 0x0202298C;
@@ -195,7 +193,7 @@ void wait_transformation_message() {
 	u16 *timer = (u16*) 0x02023D7E;
 
 	if (!a_pressed_maybe(0)) {
-		*timer = 0x30;
+		*timer = 0xFF;
 		set_b_x_callback((bxcb) delay_before_end);
 	}
 }
