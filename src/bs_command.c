@@ -193,7 +193,7 @@ void wait_transformation_message() {
 	u16 *timer = (u16*) 0x02023D7E;
 
 	if (!a_pressed_maybe(0)) {
-		*timer = 0xFF;
+		*timer = 0x3F;
 		set_b_x_callback((bxcb) delay_before_end);
 	}
 }
@@ -211,9 +211,14 @@ void transformation_message() {
 }
 
 void wait_for_animation() {
+u16 *timer = (u16*) 0x02023D7E;
 	// move_anim_active_task_count
-	if (*((u8*) 0x02037EE2) == 0) {
-		set_b_x_callback((bxcb) transformation_message);
+	if (*timer > 0) {
+		(*timer)--;
+	} else {
+		if (*((u8*) 0x02037EE2) == 0) {
+			set_b_x_callback((bxcb) transformation_message);
+		}
 	}
 }
 
@@ -224,6 +229,7 @@ void delay_for_animation() {
 	if (*timer > 0) {
 		(*timer)--;
 	} else {
+		*timer = 0xFF;
 		play_mega_evolution(0, 1);
 		set_b_x_callback((bxcb) wait_for_animation);
 	}

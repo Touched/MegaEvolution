@@ -5,6 +5,7 @@ import subprocess
 import sys
 import shutil
 import binascii
+import textwrap
 
 OBJCOPY = 'arm-none-eabi-objcopy'
 OBJDUMP = 'arm-none-eabi-objdump'
@@ -92,10 +93,34 @@ with open('test.gba', 'rb+') as rom:
 	hook(rom, table['exit_battle_hook'], 0x0159DC, 0)
 	hook(rom, table['faint_hook'], 0x0326C4, 3)
 	
+	# Add the fucking animation
+	#loc = table['mega_animation_script_data'] + 0x08000000
+	#move_index = 33 # tackle
+	#rom.seek(move_index * 4 + 0x1C68F4)
+	#rom.write(loc.to_bytes(4, 'little'))
+	
+	# FFS Copy hex
+	stupid = {
+		'anim_rainbow_y': 24,
+		'anim_rainbow_x': 106,
+		'anim_mega_stone_x': 24,
+		'anim_mega_symbol_x': 24,
+		'mega_animation_script_data': 0xAF
+	}
+	
+	for name, length in stupid.items():
+		loc = table[name]
+		print('{} (0x{:04X}):'.format(name, loc))
+		rom.seek(loc)
+		data = rom.read(length)
+		bleh = ' '.join('{:02X}'.format(c) for c in data)
+		print('\n'.join(textwrap.wrap(bleh)))
+		print()
+	
 	width = max(len(key) for key in table.keys())
 	
-	for key in sorted(table.keys()):
-		print(('{:' + str(width) + '} {:08X}').format(key + ':', table[key] + 0x08000000))
+	#for key in sorted(table.keys()):
+	#	print(('{:' + str(width) + '} {:08X}').format(key + ':', table[key] + 0x08000000))
 	
 	
     
