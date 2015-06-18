@@ -11,6 +11,11 @@ evolution *can_mega_evolve(battle_data *pokemon) {
 	evolution *evolutions = (evolution*) ((u32) evolution_table + pokemon->species * sizeof(evolution) * (*evos_per_poke + 1));
 	u8 i, j;
 	
+	// Can't mega evolve, we've already done it
+	if (megadata->done) {
+		return 0;
+	}
+	
 	for (i = 0; i <= *evos_per_poke; ++i) {
 		if (evolutions[i].type == MEGA_EVOLUTION) {
 			// Ignore reverison information
@@ -40,15 +45,36 @@ evolution *can_mega_evolve(battle_data *pokemon) {
 
 // TODO: Same as above but for primals
 
+u16 is_mega(battle_data *pokemon) {
+	evolution *evolutions = (evolution*) ((u32) evolution_table + pokemon->species * sizeof(evolution) * (*evos_per_poke + 1));
+	u8 i;
+	
+	for (i = 0; i <= *evos_per_poke; ++i) {
+		// Null argument means revert to that species
+		// Match found
+		if (evolutions[i].type == MEGA_EVOLUTION && evolutions[i].argument == 0) {
+			return evolutions[i].species;
+		}
+	}
+	
+	return 0;
+}
+
 void build_cmdbuf_mega(u8 arg, u16 len, u8 **data);
 void mark_buffer_for_execution(u8 arg);
 
 void handle_mega_evolution() {
 	if (!megadata->trigger[*b_current_bank]) return;
+	// Unset the trigger
 	megadata->trigger[*b_current_bank] = 0;
 	
 	battle_data *data = &bdata[*b_current_bank];
 	evolution *evo = can_mega_evolve(data);
+	
+	// Make sure we only mega evolve once. Primals are exempt
+	if (evo->unknown != MEGA_VARIANT_PRIMAL) {
+		megadata->done = 1;
+	}
 	
 	*b_active_side = *b_current_bank;
 	
@@ -92,4 +118,8 @@ void revert_megas() {
 	for (i = 0; i < *poke_quantity; ++i) {
 		revert_mega(player_party + i * 100);
 	}
+}
+
+void reset_mega() {
+	megadata->done = 0;
 }

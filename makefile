@@ -11,8 +11,8 @@ CXXFLAGS=-mthumb -mthumb-interwork -mcpu=arm7tdmi -mlong-calls -march=armv4t -Wa
 ASFLAGS=-mthumb
 LDFLAGS=-z muldefs
 
-all: command  move_exec_hook anim strings mega button revert_hook
-	$(LD) $(LDFLAGS) -T linker.lsc -T BPRE.sym -o build/linked.o build/bs_command.o build/anim.o build/anim_script.o build/animscript.o build/move_exec_hook.o build/strings.o build/mega.o build/move_menu_hook.o build/button.o build/exit_battle_hook.o build/faint_hook.o 
+all: command  move_exec_hook anim strings mega button revert_hook level_string_hook
+	$(LD) $(LDFLAGS) -T linker.lsc -T BPRE.sym -o build/linked.o build/bs_command.o build/anim.o build/anim_script.o build/animscript.o build/move_exec_hook.o build/strings.o build/mega.o build/move_menu_hook.o build/button.o build/exit_battle_hook.o build/faint_hook.o build/level_string_hook.o
 	$(OBJCOPY) -O binary build/linked.o build/output.bin
 
 command:
@@ -32,6 +32,9 @@ mega:
 move_exec_hook:
 	$(AS) $(AFLAGS) -c src/move_exec_hook.s -o build/move_exec_hook.o
 	$(CC) $(CFLAGS) -c src/button.c -o build/button.o
+	
+level_string_hook:
+	$(AS) $(AFLAGS) -c src/level_string_hook.s -o build/level_string_hook.o
 	
 revert_hook:
 	$(AS) $(AFLAGS) -c src/exit_battle_hook.s -o build/exit_battle_hook.o

@@ -20,7 +20,7 @@ u8 *evos_per_poke = (u8*) 0x08043116;
 
 // Mega evolution variants
 #define MEGA_VARIANT_STANDARD 0
-#define MEGA_VAIRANT_PRIMAL 1
+#define MEGA_VARIANT_PRIMAL 1
 #define MEGA_VARIANT_WISH 2 // Rayquaza
 
 #endif
