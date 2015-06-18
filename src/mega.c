@@ -46,16 +46,17 @@ void mark_buffer_for_execution(u8 arg);
 void handle_mega_evolution() {
 	if (!megadata->trigger[*b_current_bank]) return;
 	megadata->trigger[*b_current_bank] = 0;
-
-	*b_active_side = *b_current_bank;
 	
-	battle_data *data = &bdata[*b_active_side];
+	battle_data *data = &bdata[*b_current_bank];
 	evolution *evo = can_mega_evolve(data);
+	
+	*b_active_side = *b_current_bank;
 	
 	// Null check
 	if (evo) {
 		build_cmdbuf_mega(0, 4, (u8**) &evo);
-		mark_buffer_for_execution(0);
+		//mark_buffer_for_execution(0);
+		*((u32*) 0x02023BC8) = 1 << (*b_current_bank);
 	}
 }
 

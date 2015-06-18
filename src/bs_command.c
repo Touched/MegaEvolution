@@ -26,13 +26,13 @@ void animation_script_start(u8 *script, u8 attacker, u8 defender);
 extern void play_mega_evolution(u8 attacker, u8 defender);
 
 evolution *get_evolution_data() {
-	u8 *buffer_A = (u8*) 0x02022BC4;
+	u8 *buffer_A = (u8*) (0x02022BC4 + *b_active_side * 0x200);
 	return (evolution*) (buffer_A[3] | (buffer_A[4] << 8) | (buffer_A[5] << 16) | (buffer_A[6] << 24));
 }
 
 battle_data *get_battle_data() {
 	// TODO: Calculate correctnessssssss
-	return (battle_data *) 0x02023BE4 + sizeof(battle_data) * 0; 
+	return (battle_data *) 0x02023BE4 + sizeof(battle_data) * *b_active_side; 
 }
 
 void wait_for_message();
@@ -42,7 +42,7 @@ void command() {
 	// Read species from the buffer
 	evolution *evo = get_evolution_data();
 	
-	set_species(evo->species);
+	//set_species(evo->species);
 	
 	// TODO: Support no message (for primals)
 	special_strcpy((u8*) buffer, (u8*) str_before[evo->unknown]);
@@ -261,13 +261,13 @@ void show_message(char *buf) {
 
 void set_b_x_callback(bxcb callback) {
 	bxcb *bx = ((bxcb*) 0x03004FE0);
-	u8 *b_active_side = (u8*) 0x02023BC4;
-	bx += *b_active_side << 2;
-	*bx = callback;
+	//u8 *b_active_side = (u8*) 0x02023BC4;
+	//bx += *b_active_side << 2;
+	bx[*b_current_bank] = callback;
 }
 
 u8 *get_pokemon_data() {
-	u8 *team_index_by_side = (u8*) 0x02023BCE;
+	u8 *team_index_by_side = (u16*) 0x02023BCE;
 	u8 *active_side = (u8*) 0x02023BC4;
 	u8 *team = (u8*) 0x02024284;
 	

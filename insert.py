@@ -87,7 +87,7 @@ with open('test.gba', 'rb+') as rom:
 		table[entry] += where
 		
 	hook(rom, table['command'], 0x033224, 2)
-	hook(rom, table['command'], 0x038A50, 2) 
+	hook(rom, table['command'], 0x038A50, 2) # 08250A34
 	hook(rom, table['move_hook'], 0x01D040, 2)
 	hook(rom, table['move_button_hook'], 0x02EC10, 0)
 	hook(rom, table['exit_battle_hook'], 0x0159DC, 0)
@@ -110,17 +110,17 @@ with open('test.gba', 'rb+') as rom:
 	
 	for name, length in stupid.items():
 		loc = table[name]
-		print('{} (0x{:04X}):'.format(name, loc))
+		#print('{} (0x{:04X}):'.format(name, loc))
 		rom.seek(loc)
 		data = rom.read(length)
 		bleh = ' '.join('{:02X}'.format(c) for c in data)
-		print('\n'.join(textwrap.wrap(bleh)))
-		print()
+		#print('\n'.join(textwrap.wrap(bleh)))
+		#print()
 	
 	width = max(len(key) for key in table.keys())
 	
-	#for key in sorted(table.keys()):
-	#	print(('{:' + str(width) + '} {:08X}').format(key + ':', table[key] + 0x08000000))
+	for key in sorted(table.keys()):
+		print(('{:' + str(width) + '} {:08X}').format(key + ':', table[key] + 0x08000000))
 	
 	
     
