@@ -9,8 +9,9 @@ sprite mega_icon = {0x8000, 0x0, 0x000, 0x0};
 sprite mega_trigger = {0, 0x8000, 0x800, 0};
 
 void healthbar_trigger_callback(object *self);
+void healthbar_indicator_callback(object *self);
 
-template template_healthbar = {0x1234, 0xD6FF, &mega_icon, 0x08231CF0, 0, 0x08231CFC, 0x0800760C + 1};
+template template_healthbar = {0x1234, 0xD6FF, &mega_icon, 0x08231CF0, 0, 0x08231CFC, healthbar_indicator_callback};
 template template_trigger = {0x2345, 0xD6FF, &mega_trigger, 0x08231CF0, 0, 0x08231CFC, healthbar_trigger_callback};
 
 /*
@@ -24,6 +25,12 @@ palettes.
 1 palette for the level icon replacers
 1 pallete for each big trigger icon so we can change the palette to convey state
 */
+
+object *get_healthbox_objid(u8 bank) {
+	u8 *healthbox_objid_by_side = (u8*) 0x03004FF0;
+	u8 id = healthbox_objid_by_side[bank];
+	return &objects[id];
+}
 
 void healthbar_trigger_callback(object *self) {
 	// Find the health box object that this trigger is supposed to be attached to
@@ -42,9 +49,24 @@ void healthbar_trigger_callback(object *self) {
 		self->x = -32;
 	}
 	
-	// Switch palettte
-	//u8 i;
-	//for (i = 0; i < 16; ++i) *((u16*) (0x05000200 + 32 * 4 + i * 2)) = 0;
+	// TODO: Switch palettte according to button state
+}
+
+void healthbar_indicator_callback(object *self) {
+	object *healthbox = get_healthbox_objid(0);
+	
+	u8 y = (u8) healthbox->final_oam.attr0,
+		x =  (healthbox->final_oam.attr1 & 0x1FF);
+		
+	// TODO: Determine font width of level and adjust x pos accordingly
+	if (y) {
+		self->y = y + 8;
+		self->x = x + 64 + 24;
+	} else {
+		self->x = -8;
+	}
+	
+	// TODO: Visibility
 }
 
 void healthbar_load_graphics(u8 state) {
