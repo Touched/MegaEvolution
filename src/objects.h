@@ -71,5 +71,6 @@ typedef struct resource {
 
 u8 template_instanciate_forward_search(struct template *t, u16 x, u16 y, u8 b);
 u16 gpu_tile_obj_decompress_alloc_tag_and_upload(resource *src);
+object *objects = (object*) 0x0202063C;
 
 #endif
