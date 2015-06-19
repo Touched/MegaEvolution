@@ -19,3 +19,5 @@ task_add = 0x0807741D;
 task_is_running = 0x08077651;
 task_find_id_by_funcptr = 0x08077689;
 battle_side_get_owner = 0x080751C5;
+template_instanciate_forward_search = 0x08006F8D;
+gpu_tile_obj_decompress_alloc_tag_and_upload = 0x0800F035;

@@ -92,8 +92,10 @@ with open('test.gba', 'rb+') as rom:
 	hook(rom, table['move_button_hook'], 0x02EC10, 0)
 	hook(rom, table['exit_battle_hook'], 0x0159DC, 0)
 	hook(rom, table['faint_hook'], 0x0326C4, 3)
-	hook(rom, table['level_string_hook'], 0x0483A4, 1)
-	
+	#hook(rom, table['level_string_hook'], 0x0483A4, 1)
+	#hook(rom, table['mega_level_icon_hook'], 0x049E18, 1)
+	hook(rom, table['load_graphics_hook'], 0x03495C, 1)
+	#hook(rom, table['show_graphics_hook'], 0x047FD8, 1)
 	# Add the fucking animation
 	#loc = table['mega_animation_script_data'] + 0x08000000
 	#move_index = 33 # tackle

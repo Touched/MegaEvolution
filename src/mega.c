@@ -53,7 +53,7 @@ u16 is_mega(battle_data *pokemon) {
 		// Null argument means revert to that species
 		// Match found
 		if (evolutions[i].type == MEGA_EVOLUTION && evolutions[i].argument == 0) {
-			return evolutions[i].species;
+			return 1;
 		}
 	}
 	
