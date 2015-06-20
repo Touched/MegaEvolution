@@ -11,15 +11,17 @@ CXXFLAGS=-mthumb -mthumb-interwork -mcpu=arm7tdmi -mlong-calls -march=armv4t -Wa
 ASFLAGS=-mthumb
 LDFLAGS=-z muldefs
 
-all: command  move_exec_hook anim strings mega button revert_hook level_string_hook assets
-	$(LD) $(LDFLAGS) -T linker.lsc -T BPRE.sym -o build/linked.o build/bs_command.o build/anim.o build/anim_script.o build/animscript.o build/move_exec_hook.o build/strings.o build/mega.o build/move_menu_hook.o build/button.o build/exit_battle_hook.o build/faint_hook.o build/healthbar.o build/healthbar_hooks.o build/images_indicators.o
+all: command  move_exec_hook anim strings mega button revert_hook level_string_hook assets images
+	$(LD) $(LDFLAGS) -T linker.lsc -T BPRE.sym -o build/linked.o build/bs_command.o build/anim.o build/anim_script.o build/animscript.o build/move_exec_hook.o build/strings.o build/mega.o build/move_menu_hook.o build/button.o build/exit_battle_hook.o build/faint_hook.o build/healthbar.o build/healthbar_hooks.o build/images_indicators.o build/images_mega_trigger.o
 	$(OBJCOPY) -O binary build/linked.o build/output.bin
 	
-assets: images
+assets:
 	$(CC) $(CFLAGS) -c src/images/indicators.c -o build/images_indicators.o
+	$(CC) $(CFLAGS) -c src/images/mega_trigger.c -o build/images_mega_trigger.o
 	
 images:
-	 grit assets/indicators.png -gzl -gB 4 -ftc -fh -pe16 -gu8 -o src/images/indicators.c
+	grit assets/indicators.png -gzl -gB 4 -ftc -fh -pe16 -gu8 -o src/images/indicators.c
+	grit assets/mega_trigger.png -gzl -gB 4 -ftc -fh -pe16 -gu8 -o src/images/mega_trigger.c
 
 command:
 	$(CC) $(CFLAGS) -c src/bs_command.c -o build/bs_command.o

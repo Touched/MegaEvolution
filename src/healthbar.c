@@ -1,6 +1,7 @@
 #include "objects.h"
 #include "battle.h"
 #include "images/indicators.h"
+#include "images/mega_trigger.h"
 
 //resource gfx_healthbar = {0x083EF524, 0x80, 0x1234};
 resource gfx_indicator = {indicatorsTiles, 0x80, 0x1234};
