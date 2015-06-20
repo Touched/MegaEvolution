@@ -12,7 +12,7 @@ resource pal_trigger = {mega_triggerPal, 0x2345};
 
 sprite mega_indicator = {0, 0x0, 0x000, 0x0};
 //sprite mega_icon = {0x0, 0x4000, 0x000, 0x0};
-sprite mega_trigger = {0, 0x8000, 0x000, 0};
+sprite mega_trigger = {0, 0x8000, 0x400, 0};
 
 void healthbar_trigger_callback(object *self);
 void healthbar_indicator_callback(object *self);
