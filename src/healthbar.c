@@ -5,8 +5,9 @@
 
 //resource gfx_healthbar = {0x083EF524, 0x80, 0x1234};
 resource gfx_indicator = {indicatorsTiles, 0x80, 0x1234};
-resource gfx_trigger = {0x083EF524, 0x1C00, 0x2345};
 resource pal_indicator = {indicatorsPal, 0x1234};
+resource gfx_trigger = {mega_triggerTiles, 0x1C00, 0x2345};
+resource pal_trigger = {mega_triggerPal, 0x2345};
 // 083F6CBO - 32x32?
 
 sprite mega_indicator = {0, 0x0, 0x000, 0x0};
@@ -17,7 +18,7 @@ void healthbar_trigger_callback(object *self);
 void healthbar_indicator_callback(object *self);
 
 template template_indicator = {0x1234, 0x1234, &mega_indicator, 0x08231CF0, 0, 0x08231CFC, healthbar_indicator_callback};
-template template_trigger = {0x2345, 0xD6FF, &mega_trigger, 0x08231CF0, 0, 0x08231CFC, healthbar_trigger_callback};
+template template_trigger = {0x2345, 0x2345, &mega_trigger, 0x08231CF0, 0, 0x08231CFC, healthbar_trigger_callback};
 
 /*
 I don't know how much space I can use for OAMs in battle, so it should be kept
@@ -51,7 +52,7 @@ void healthbar_trigger_callback(object *self) {
 
 	if (y) {
 		// Copy the healthbox's position (it has various animations)
-		self->y = y + 16;
+		self->y = y + 20;
 		self->x = (healthbox->final_oam.attr1 & 0x1FF) - 7;
 	} else {
 		// The box is offscreen, so hide this one as well
@@ -86,6 +87,7 @@ void healthbar_indicator_callback(object *self) {
 void healthbar_load_graphics(u8 state) {
 	if (state == 2) {
 		gpu_pal_obj_alloc_tag_and_apply(&pal_indicator);
+		gpu_pal_obj_alloc_tag_and_apply(&pal_trigger);
 	
 		gpu_tile_obj_decompress_alloc_tag_and_upload(&gfx_indicator);
 		template_instanciate_forward_search(&template_indicator, 90, 25, 1);
