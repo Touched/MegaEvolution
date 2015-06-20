@@ -5,7 +5,8 @@ resource gfx_healthbar = {0x083EF524, 0x80, 0x1234};
 resource gfx_trigger = {0x083EF524, 0x1C00, 0x2345};
 // 083F6CBO - 32x32?
 
-sprite mega_icon = {0x8000, 0x0, 0x000, 0x0};
+//sprite mega_icon = {0x8000, 0x0, 0x000, 0x0};
+sprite mega_icon = {0x0, 0x4000, 0x000, 0x0};
 sprite mega_trigger = {0, 0x8000, 0x800, 0};
 
 void healthbar_trigger_callback(object *self);
@@ -25,6 +26,9 @@ palettes.
 1 palette for the level icon replacers
 1 pallete for each big trigger icon so we can change the palette to convey state
 */
+
+// charset: 0 - en, 1 -jp
+int font_get_width_of_string(u8 charset, char *string, u16 xcursor);
 
 object *get_healthbox_objid(u8 bank) {
 	u8 *healthbox_objid_by_side = (u8*) 0x03004FF0;
@@ -58,13 +62,18 @@ void healthbar_indicator_callback(object *self) {
 	u8 y = (u8) healthbox->final_oam.attr0,
 		x =  (healthbox->final_oam.attr1 & 0x1FF);
 		
+	char str[] = {0xC7, 0xFF};
+		
 	// TODO: Determine font width of level and adjust x pos accordingly
 	if (y) {
 		self->y = y + 8;
-		self->x = x + 64 + 24;
+		self->x = x + 64 + 27 - font_get_width_of_string(0, str, 0);
 	} else {
 		self->x = -8;
 	}
+	
+	// Hide
+	//self->final_oam.attr2 = (self->final_oam.attr2 & 0xC00) | 0xC00;
 	
 	// TODO: Visibility
 }
