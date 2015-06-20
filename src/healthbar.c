@@ -1,18 +1,21 @@
 #include "objects.h"
 #include "battle.h"
+#include "images/indicators.h"
 
-resource gfx_healthbar = {0x083EF524, 0x80, 0x1234};
+//resource gfx_healthbar = {0x083EF524, 0x80, 0x1234};
+resource gfx_healthbar = {indicatorsTiles, 0x80, 0x1234};
 resource gfx_trigger = {0x083EF524, 0x1C00, 0x2345};
+resource pal_indicator = {indicatorsPal, 0x1234};
 // 083F6CBO - 32x32?
 
-//sprite mega_icon = {0x8000, 0x0, 0x000, 0x0};
-sprite mega_icon = {0x0, 0x4000, 0x000, 0x0};
+sprite mega_icon = {0, 0x0, 0x000, 0x0};
+//sprite mega_icon = {0x0, 0x4000, 0x000, 0x0};
 sprite mega_trigger = {0, 0x8000, 0x800, 0};
 
 void healthbar_trigger_callback(object *self);
 void healthbar_indicator_callback(object *self);
 
-template template_healthbar = {0x1234, 0xD6FF, &mega_icon, 0x08231CF0, 0, 0x08231CFC, healthbar_indicator_callback};
+template template_healthbar = {0x1234, 0x1234, &mega_icon, 0x08231CF0, 0, 0x08231CFC, healthbar_indicator_callback};
 template template_trigger = {0x2345, 0xD6FF, &mega_trigger, 0x08231CF0, 0, 0x08231CFC, healthbar_trigger_callback};
 
 /*
@@ -29,6 +32,7 @@ palettes.
 
 // charset: 0 - en, 1 -jp
 int font_get_width_of_string(u8 charset, char *string, u16 xcursor);
+void gpu_pal_obj_alloc_tag_and_apply(resource *pal);
 
 object *get_healthbox_objid(u8 bank) {
 	u8 *healthbox_objid_by_side = (u8*) 0x03004FF0;
@@ -66,8 +70,8 @@ void healthbar_indicator_callback(object *self) {
 		
 	// TODO: Determine font width of level and adjust x pos accordingly
 	if (y) {
-		self->y = y + 8;
-		self->x = x + 64 + 27 - font_get_width_of_string(0, str, 0);
+		self->y = y + 11;
+		self->x = x + 64 + 26 - font_get_width_of_string(0, str, 0);
 	} else {
 		self->x = -8;
 	}
@@ -80,6 +84,8 @@ void healthbar_indicator_callback(object *self) {
 
 void healthbar_load_graphics(u8 state) {
 	if (state == 2) {
+		gpu_pal_obj_alloc_tag_and_apply(&pal_indicator);
+	
 		gpu_tile_obj_decompress_alloc_tag_and_upload(&gfx_healthbar);
 		template_instanciate_forward_search(&template_healthbar, 90, 25, 1);
 		gpu_tile_obj_decompress_alloc_tag_and_upload(&gfx_trigger);

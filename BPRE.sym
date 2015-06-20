@@ -23,3 +23,4 @@ template_instanciate_forward_search = 0x08006F8D;
 gpu_tile_obj_decompress_alloc_tag_and_upload = 0x0800F035;
 font_get_width_of_string = 0x08005ED5;
 memcpy = 0x081E5E79;
+gpu_pal_obj_alloc_tag_and_apply = 0x08008929;
