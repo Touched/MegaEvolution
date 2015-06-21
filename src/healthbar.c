@@ -65,7 +65,7 @@ void healthbar_trigger_callback(object *self) {
 }
 
 void healthbar_indicator_callback(object *self) {
-	object *healthbox = get_healthbox_objid(0);
+	object *healthbox = get_healthbox_objid(self->private[0]);
 	
 	u8 y = (u8) healthbox->final_oam.attr0,
 		x =  (healthbox->final_oam.attr1 & 0x1FF);
@@ -77,9 +77,8 @@ void healthbar_indicator_callback(object *self) {
 		//self->y = y + 11;
 		self->x = x + 64 + 26 - font_get_width_of_string(0, str, 0);
 		
-		
 		// objc_dp11b_pingpong
-		object *ping = &objects[5];
+		object *ping = &objects[5]; // TODO: Determine correct index programmatically
 		self->y = healthbox->y - 4;
 		self->y2 = get_pingpong(ping->private[0], ping->private[2]);
 	} else {
@@ -98,14 +97,16 @@ void healthbar_load_graphics(u8 state) {
 		gpu_pal_obj_alloc_tag_and_apply(&pal_trigger);
 	
 		gpu_tile_obj_decompress_alloc_tag_and_upload(&gfx_indicator);
-		template_instanciate_forward_search(&template_indicator, 90, 25, 1);
 		gpu_tile_obj_decompress_alloc_tag_and_upload(&gfx_trigger);
-		template_instanciate_forward_search(&template_trigger, 130, 90, 1);
+		//template_instanciate_forward_search(&template_trigger, 130, 90, 1);
+		
+		// Create a Mega Indicator for every bank
+		u8 bank;
+		for (bank = 0; bank < *b_num_active_sides; ++bank) {
+			u8 objid = template_instanciate_forward_search(&template_indicator, 90, 25, 1);
+			objects[objid].private[0] = bank;
+		}
 	}
-	// state 
-	// 3: player 2
-	// 4: enemy 1
-	// 5: enemy 2
 }
 
 
