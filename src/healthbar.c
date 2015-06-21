@@ -52,10 +52,12 @@ void healthbar_trigger_callback(object *self) {
 	
 	u8 y = (u8) healthbox->final_oam.attr0;
 
+object *ping = &objects[6];
 	if (y) {
 		// Copy the healthbox's position (it has various animations)
-		self->y = y + 20;
+		//self->y = healthbox->y + 20;
 		self->x = (healthbox->final_oam.attr1 & 0x1FF) - 7;
+		self->y2 = get_pingpong(ping->private[0], ping->private[2]);
 	} else {
 		// The box is offscreen, so hide this one as well
 		self->x = -32;
@@ -77,8 +79,8 @@ void healthbar_indicator_callback(object *self) {
 		//
 		self->x = x + 64 + 26 - font_get_width_of_string(0, str, 0);
 		
-		object *ping = &objects[5]; // TODO: Determine correct index programmatically
-		if (ping->callback == 0x08012309) {
+		object *ping = &objects[6]; // TODO: Determine correct index programmatically
+		if (ping->callback == 0x08012309 && self->private[0] == *b_attacker) {
 			// objc_dp11b_pingpong
 			self->y = healthbox->y - 4;
 			self->y2 = get_pingpong(ping->private[0], ping->private[2]);
@@ -103,7 +105,7 @@ void healthbar_load_graphics(u8 state) {
 	
 		gpu_tile_obj_decompress_alloc_tag_and_upload(&gfx_indicator);
 		gpu_tile_obj_decompress_alloc_tag_and_upload(&gfx_trigger);
-		//template_instanciate_forward_search(&template_trigger, 130, 90, 1);
+		
 		
 		// Create a Mega Indicator for every bank
 		u8 bank;
@@ -111,6 +113,8 @@ void healthbar_load_graphics(u8 state) {
 			u8 objid = template_instanciate_forward_search(&template_indicator, 0, 0, 1);
 			objects[objid].private[0] = bank;
 		}
+		
+		template_instanciate_forward_search(&template_trigger, 130, 90, 1);
 	}
 }
 
