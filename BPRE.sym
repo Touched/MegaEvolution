@@ -25,3 +25,4 @@ memcpy = 0x081E5E79;
 gpu_pal_obj_alloc_tag_and_apply = 0x08008929;
 play_sound = 0x080722CD;
 play_song = 0x08071A75;
+get_pingpong = 0x08044E31;

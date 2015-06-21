@@ -42,6 +42,8 @@ object *get_healthbox_objid(u8 bank) {
 	return &objects[id];
 }
 
+s16 get_pingpong(s16 phase, s16 scale);
+
 void healthbar_trigger_callback(object *self) {
 	// Find the health box object that this trigger is supposed to be attached to
 	u8 *healthbox_objid_by_side = (u8*) 0x03004FF0;
@@ -72,8 +74,14 @@ void healthbar_indicator_callback(object *self) {
 		
 	// TODO: Determine font width of level and adjust x pos accordingly
 	if (y) {
-		self->y = y + 11;
+		//self->y = y + 11;
 		self->x = x + 64 + 26 - font_get_width_of_string(0, str, 0);
+		
+		
+		// objc_dp11b_pingpong
+		object *ping = &objects[5];
+		self->y = healthbox->y - 4;
+		self->y2 = get_pingpong(ping->private[0], ping->private[2]);
 	} else {
 		self->x = -8;
 	}
