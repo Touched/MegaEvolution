@@ -31,7 +31,7 @@ level_string_hook:
 	@add r0, r1 
 	@bl is_mega
 	cmp r1, #0
-	bne load_special
+	beq load_special
 	ldr r1, level_string
 	mov r0, sp
 	mov r2, #0x10
@@ -54,7 +54,7 @@ load_special:
 	mov r2, #0x10
 	bl memcpy
 	mov r0, sp
-	add r0, #7
+	add r0, #0
 	
 	mov r1, r4
 	mov r2, #0
@@ -62,7 +62,21 @@ load_special:
 	bl int_to_str
 	
 	mov r1, r0
-	sub r1, #7
+	sub r1, #2
+	
+	@
+	mov r0, sp
+	sub r1, r0
+	mov r0, #3
+	sub r0, r1
+	lsl r1, r0, #2
+	add r1, r1, r0
+	sub r1, #2
+	add r3, sp, #0x10
+	mov r0, sp
+	mov r2, #3
+	ldr r6, =(0x080483D6 + 1)
+	bx r6
 	
 return:	
 	ldr r6, =(0x080483C4 + 1)
@@ -82,13 +96,6 @@ battle_data: .word 0x02023BE4
 b_current_bank: .word 0x02023D6F
 objects: .word 0x0202063C
 special_string:
-	.byte 0xFC @ Set Colour
-	.byte 0x1
-	.byte 0xC @ 0xE for red, 0xC for blue
-	.byte 0x34 @ Lv
-	.byte 0xFC @ Revert colour
-	.byte 0x1
-	.byte 0x1
 	.byte 0xFF
 	.rept 16
 	.byte 0
