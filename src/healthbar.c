@@ -74,13 +74,18 @@ void healthbar_indicator_callback(object *self) {
 		
 	// TODO: Determine font width of level and adjust x pos accordingly
 	if (y) {
-		//self->y = y + 11;
+		//
 		self->x = x + 64 + 26 - font_get_width_of_string(0, str, 0);
 		
-		// objc_dp11b_pingpong
 		object *ping = &objects[5]; // TODO: Determine correct index programmatically
-		self->y = healthbox->y - 4;
-		self->y2 = get_pingpong(ping->private[0], ping->private[2]);
+		if (ping->callback == 0x08012309) {
+			// objc_dp11b_pingpong
+			self->y = healthbox->y - 4;
+			self->y2 = get_pingpong(ping->private[0], ping->private[2]);
+		} else {
+			self->y = y + 11;
+			self->y2 = 0;
+		}
 	} else {
 		self->x = -8;
 	}
@@ -103,7 +108,7 @@ void healthbar_load_graphics(u8 state) {
 		// Create a Mega Indicator for every bank
 		u8 bank;
 		for (bank = 0; bank < *b_num_active_sides; ++bank) {
-			u8 objid = template_instanciate_forward_search(&template_indicator, 90, 25, 1);
+			u8 objid = template_instanciate_forward_search(&template_indicator, 0, 0, 1);
 			objects[objid].private[0] = bank;
 		}
 	}

@@ -37,5 +37,6 @@ u8 *b_current_bank = (u8*) 0x02023D6F;
 battle_data *bdata = (battle_data *) (0x02023BE4);
 u32 *battle_type_flags = (u32*) (0x02022B4C);
 u8 *b_num_active_sides = (u8*) 0x02023BCC;
+u32 *b_x = (u32 *) 0x03004FE0;
 
-#endif
+#endif 
