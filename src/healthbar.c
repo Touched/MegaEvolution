@@ -81,23 +81,12 @@ void healthbar_indicator_callback(object *self) {
 		// the battle type and the side the healthbox represents.
 		s16 shift = 64; // Halfway point for OAM
 	
-		if (*battle_type_flags & 1) {
-			// double
-			if (self->private[0] & 1) {
-				// enemy
-				shift += 18;
-			} else {
-				// player
-				shift += 26;
-			}
+		if (self->private[0] & 1) {
+			// enemy
+			shift += 18;
 		} else {
-			if (self->private[0] & 1) {
-				// enemy
-				shift += 26;
-			} else {
-				// player
-				shift += 26;
-			}
+			// player
+			shift += 26;
 		}
 		
 		// Convert the level to a string to get how long it is
