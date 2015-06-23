@@ -90,7 +90,7 @@ u16 calcEnabled(u16 clra) {
 void healthbar_trigger_callback(object *self) {
 	// Find the health box object that this trigger is supposed to be attached to
 	u8 *healthbox_objid_by_side = (u8*) 0x03004FF0;
-	u8 id = healthbox_objid_by_side[0];
+	u8 id = healthbox_objid_by_side[*b_current_bank];
 	object *healthbox = &objects[id];
 	
 	u8 y = (u8) healthbox->final_oam.attr0;
@@ -101,12 +101,13 @@ void healthbar_trigger_callback(object *self) {
 		//self->y = healthbox->y + 20;
 		self->x = (healthbox->final_oam.attr1 & 0x1FF) - 5 + self->private[3];
 		self->y2 = get_pingpong(ping->private[0], ping->private[2]);
+		self->y = healthbox->y;
 	} else {
 		// The box is offscreen, so hide this one as well
 		self->x = -32;
 	}
 	
-	if (b_x[self->private[*b_current_bank]] == 0x0802EA11) {
+	if (b_x[*b_current_bank] == 0x0802EA11) {
 		if (self->private[3] > 0) {
 			self->private[3] -= 2;
 		} else {
