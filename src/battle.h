@@ -3,6 +3,7 @@
 
 #include "types.h"
 
+#pragma pack(push, 1)
 typedef struct battle_data
 {
 	u16 species;
@@ -29,6 +30,7 @@ typedef struct battle_data
 	u32 status2;
 	u32  otid;
 } battle_data;
+#pragma pack(pop)
 
 u8 *b_active_side = (u8*) 0x02023BC4;
 u8 *b_attacker = (u8*) 0x02023D6B;

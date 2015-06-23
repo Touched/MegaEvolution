@@ -102,7 +102,7 @@ void healthbar_indicator_callback(object *self) {
 		
 		// Convert the level to a string to get how long it is
 		char buf[10];
-		battle_data *data = bdata + sizeof(battle_data) * self->private[0];
+		battle_data *data = &bdata[self->private[0]];
 		u8 stringlen = int_to_str(buf, data->level, 0, 3) - buf;
 		
 		// The x position depends on the X origin of the healthbox as well as
