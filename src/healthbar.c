@@ -13,7 +13,7 @@ resource gfx_trigger = {mega_triggerTiles, 0x1C00, 0x2345};
 resource pal_trigger = {mega_triggerPal, 0x2345};
 // 083F6CBO - 32x32?
 
-sprite mega_indicator = {0, 0x0, 0x800, 0x0};
+sprite mega_indicator = {0, 0x0, 0x00, 0x0};
 //sprite mega_icon = {0x0, 0x4000, 0x000, 0x0};
 sprite mega_trigger = {0, 0x8000, 0x800, 0};
 
