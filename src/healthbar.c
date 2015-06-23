@@ -2,6 +2,7 @@
 #include "battle.h"
 #include "common.h"
 #include "graphics.h"
+#include "mega.h"
 #include "images/indicators.h"
 #include "images/mega_trigger.h"
 
@@ -62,6 +63,30 @@ u16 calcGrayscale(u16 color) {
 	return gray | (gray << 5) | (gray << 10);
 }
 
+u16 calcEnabled(u16 clra) {
+	u16 clrb = 0x7FFF;
+	
+	u32 currentAlpha  = 20;
+
+
+	const u32 rbmask= ((0x1F)|(0x1F << 10)), gmask= 0x1F << 5;
+	const u32 rbhalf= 0x4010, ghalf= 0x0200;
+
+	// Red and blue
+	u32 parta = clra & rbmask;
+	u32 partb = clrb & rbmask;
+	u32 part = (partb-parta) * (32 - ((currentAlpha < 0x100) ? currentAlpha : currentAlpha >> 12)) + parta*32 + rbhalf;
+	u16 clr = (part >> 5) & rbmask;
+
+	// Green
+	parta = clra & gmask;
+	partb = clrb & gmask;
+	part = (partb-parta) * (32 - ((currentAlpha < 0x100) ? currentAlpha : currentAlpha >> 12)) + parta*32 + ghalf;
+	clr |= (part >> 5) & gmask;
+
+	return clr;
+}
+
 void healthbar_trigger_callback(object *self) {
 	// Find the health box object that this trigger is supposed to be attached to
 	u8 *healthbox_objid_by_side = (u8*) 0x03004FF0;
@@ -81,21 +106,34 @@ object *ping = &objects[6];
 		self->x = -32;
 	}
 	
-	if (!self->private[2]) {
-		self->private[1] = 1;
-		self->private[2] = 1;
+	if (megadata->done) {
+		self->private[1] = 3;
+	} else {
+		if (megadata->trigger[0]) {
+			self->private[1] = 1;
+		} else {
+			self->private[1] = 2;
+		}
 	}
 	
-	// TODO: Switch palettte according to button state
-	if (self->private[1]) {
+	// Only change the palette if the state has changed
+	if (self->private[1] != self->private[2]) {
 		palette *pal = &palette_obj_faded[gpu_pal_tags_index_of(0x2345)];
 		u8 i;
 		
 		for(i = 0; i < 16; i++) {
-			pal->c[i] = calcGrayscale(pal->c[i]);
+			if (i == 0 || i == 15 || i == 3 || i == 2 || i == 8) continue;
+			
+			if (self->private[1] == 1) {
+				pal->c[i] = calcEnabled(mega_triggerPal[i]);
+			} else if (self->private[1] == 2) {
+				pal->c[i] = mega_triggerPal[i];
+			} else if (self->private[1] == 3) {
+				pal->c[i] = calcGrayscale(mega_triggerPal[i]);
+			}
 		}
 		
-		self->private[1] = 0;
+		self->private[2] = self->private[1];
 	}
 }
 
