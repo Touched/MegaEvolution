@@ -14,9 +14,6 @@ level_string_hook:
 	
 	@ Check if is mega
 	ldr r0, battle_data
-	@ldr r1, b_current_bank
-	@ldrb r1, [r1]
-	@mov r1, #2
 	
 	@ Get owner of the health bar
 	ldr r2, objects
@@ -26,12 +23,13 @@ level_string_hook:
 	add r1, r2
 	ldrh r1, [r1, #0x3A]
 	
-	@mov r2, #0x58
-	@mul r1, r2
-	@add r0, r1 
-	@bl is_mega
+	mov r2, #0x58
+	mul r1, r2
+	add r0, r1 
+	bl is_mega
 	cmp r1, #0
-	beq load_special
+	bne load_special
+	
 	ldr r1, level_string
 	mov r0, sp
 	mov r2, #0x10
