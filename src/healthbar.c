@@ -88,6 +88,11 @@ u16 calcEnabled(u16 clra) {
 }
 
 void healthbar_trigger_callback(object *self) {
+	if (!can_mega_evolve(&bdata[*b_current_bank])) {
+		self->x = -32;
+		return;
+	}
+
 	// Find the health box object that this trigger is supposed to be attached to
 	u8 *healthbox_objid_by_side = (u8*) 0x03004FF0;
 	u8 id = healthbox_objid_by_side[*b_current_bank];
