@@ -200,8 +200,9 @@ void healthbar_indicator_callback(object *self) {
 		self->x = -8;
 	}
 	
-	// Hide
-	//self->final_oam.attr2 = (self->final_oam.attr2 & 0xC00) | 0xC00;
+	// Mirror healthbox priority
+	u8 priority = ((healthbox->final_oam.attr2 >> 10) & 3);
+	self->final_oam.attr2 = (self->final_oam.attr2 & ~0xC00) | (priority << 10);
 	
 	// TODO: Visibility
 }
