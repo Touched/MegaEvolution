@@ -131,7 +131,7 @@ void healthbar_trigger_callback(object *self) {
 	if (megadata->done) {
 		self->private[1] = 3;
 	} else {
-		if (megadata->trigger[0]) {
+		if (megadata->trigger[*b_current_bank]) {
 			self->private[1] = 1;
 		} else {
 			self->private[1] = 2;
