@@ -13,9 +13,9 @@ resource gfx_trigger = {mega_triggerTiles, 0x1C00, 0x2345};
 resource pal_trigger = {mega_triggerPal, 0x2345};
 // 083F6CBO - 32x32?
 
-sprite mega_indicator = {0, 0x0, 0x000, 0x0};
+sprite mega_indicator = {0, 0x0, 0x800, 0x0};
 //sprite mega_icon = {0x0, 0x4000, 0x000, 0x0};
-sprite mega_trigger = {0, 0x8000, 0x400, 0};
+sprite mega_trigger = {0, 0x8000, 0x800, 0};
 
 void healthbar_trigger_callback(object *self);
 void healthbar_indicator_callback(object *self);
@@ -95,15 +95,29 @@ void healthbar_trigger_callback(object *self) {
 	
 	u8 y = (u8) healthbox->final_oam.attr0;
 
-object *ping = &objects[6];
+	object *ping = &objects[6];
 	if (y) {
 		// Copy the healthbox's position (it has various animations)
 		//self->y = healthbox->y + 20;
-		self->x = (healthbox->final_oam.attr1 & 0x1FF) - 7;
+		self->x = (healthbox->final_oam.attr1 & 0x1FF) - 5 + self->private[3];
 		self->y2 = get_pingpong(ping->private[0], ping->private[2]);
 	} else {
 		// The box is offscreen, so hide this one as well
 		self->x = -32;
+	}
+	
+	if (b_x[self->private[*b_current_bank]] == 0x0802EA11) {
+		if (self->private[3] > 0) {
+			self->private[3]--;
+		} else {
+			self->private[3] = 0;
+		}
+	} else {
+		if (self->private[3] < 32) {
+			self->private[3]++;
+		} else {
+			return;
+		}
 	}
 	
 	if (megadata->done) {
@@ -185,6 +199,8 @@ void healthbar_indicator_callback(object *self) {
 }
 
 void healthbar_load_graphics(u8 state) {
+	u8 objid;
+
 	if (state == 2) {
 		gpu_pal_obj_alloc_tag_and_apply(&pal_indicator);
 		gpu_pal_obj_alloc_tag_and_apply(&pal_trigger);
@@ -196,11 +212,11 @@ void healthbar_load_graphics(u8 state) {
 		// Create a Mega Indicator for every bank
 		u8 bank;
 		for (bank = 0; bank < *b_num_active_sides; ++bank) {
-			u8 objid = template_instanciate_forward_search(&template_indicator, 0, 0, 1);
+			objid = template_instanciate_forward_search(&template_indicator, 0, 0, 1);
 			objects[objid].private[0] = bank;
 		}
 		
-		template_instanciate_forward_search(&template_trigger, 130, 90, 1);
+		objid = template_instanciate_forward_search(&template_trigger, 130, 90, 1);
 	}
 }
 
