@@ -108,14 +108,15 @@ void healthbar_trigger_callback(object *self) {
 	
 	if (b_x[self->private[*b_current_bank]] == 0x0802EA11) {
 		if (self->private[3] > 0) {
-			self->private[3]--;
+			self->private[3] -= 2;
 		} else {
 			self->private[3] = 0;
 		}
 	} else {
-		if (self->private[3] < 32) {
-			self->private[3]++;
+		if (self->private[3] < 16) {
+			self->private[3] += 2;
 		} else {
+			// Hide offscreen once invisible
 			self->x = -32;
 			return;
 		}
