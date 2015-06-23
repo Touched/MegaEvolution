@@ -116,6 +116,7 @@ void healthbar_trigger_callback(object *self) {
 		if (self->private[3] < 32) {
 			self->private[3]++;
 		} else {
+			self->x = -32;
 			return;
 		}
 	}
