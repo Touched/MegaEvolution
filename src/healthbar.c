@@ -1,5 +1,6 @@
 #include "objects.h"
 #include "battle.h"
+#include "common.h"
 #include "images/indicators.h"
 #include "images/mega_trigger.h"
 
@@ -31,6 +32,8 @@ palettes.
 1 palette for the level icon replacers
 1 pallete for each big trigger icon so we can change the palette to convey state
 */
+
+
 
 // charset: 0 - en, 1 -jp
 int font_get_width_of_string(u8 charset, char *string, u16 xcursor);
@@ -72,12 +75,39 @@ void healthbar_indicator_callback(object *self) {
 	u8 y = (u8) healthbox->final_oam.attr0,
 		x =  (healthbox->final_oam.attr1 & 0x1FF);
 		
-	char str[] = {0xC7, 0xFF};
-		
 	// TODO: Determine font width of level and adjust x pos accordingly
 	if (y) {
-		//
-		self->x = x + 64 + 26 - font_get_width_of_string(0, str, 0);
+		// Figure out the X position for the indicator - it differs depending on
+		// the battle type and the side the healthbox represents.
+		s16 shift = 64; // Halfway point for OAM
+	
+		if (*battle_type_flags & 1) {
+			// double
+			if (self->private[0] & 1) {
+				// enemy
+				shift += 18;
+			} else {
+				// player
+				shift += 26;
+			}
+		} else {
+			if (self->private[0] & 1) {
+				// enemy
+				shift += 26;
+			} else {
+				// player
+				shift += 26;
+			}
+		}
+		
+		// Convert the level to a string to get how long it is
+		char buf[10];
+		battle_data *data = bdata + sizeof(battle_data) * self->private[0];
+		u8 stringlen = int_to_str(buf, data->level, 0, 3) - buf;
+		
+		// The x position depends on the X origin of the healthbox as well as
+		// the string length
+		self->x = x + shift - 5 * stringlen;
 		
 		object *ping = &objects[6]; // TODO: Determine correct index programmatically
 		if (ping->callback == 0x08012309 && self->private[0] == *b_attacker) {
