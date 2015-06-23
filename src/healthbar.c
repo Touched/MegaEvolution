@@ -1,6 +1,7 @@
 #include "objects.h"
 #include "battle.h"
 #include "common.h"
+#include "graphics.h"
 #include "images/indicators.h"
 #include "images/mega_trigger.h"
 
@@ -47,6 +48,20 @@ object *get_healthbox_objid(u8 bank) {
 
 s16 get_pingpong(s16 phase, s16 scale);
 
+u16 calcGrayscale(u16 color) {
+	u32 r = color & 31,
+		g = (color >> 5) & 31,
+		b = (color >> 10) & 31;
+		
+	r *= 0x4C;
+	g *= 0x96;
+	b *= 0x1E;
+	
+	u16 gray = (r + g + b + 0x80) >> 8;
+	
+	return gray | (gray << 5) | (gray << 10);
+}
+
 void healthbar_trigger_callback(object *self) {
 	// Find the health box object that this trigger is supposed to be attached to
 	u8 *healthbox_objid_by_side = (u8*) 0x03004FF0;
@@ -66,7 +81,22 @@ object *ping = &objects[6];
 		self->x = -32;
 	}
 	
+	if (!self->private[2]) {
+		self->private[1] = 1;
+		self->private[2] = 1;
+	}
+	
 	// TODO: Switch palettte according to button state
+	if (self->private[1]) {
+		palette *pal = &palette_obj_faded[gpu_pal_tags_index_of(0x2345)];
+		u8 i;
+		
+		for(i = 0; i < 16; i++) {
+			pal->c[i] = calcGrayscale(pal->c[i]);
+		}
+		
+		self->private[1] = 0;
+	}
 }
 
 void healthbar_indicator_callback(object *self) {

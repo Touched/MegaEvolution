@@ -8,12 +8,14 @@ typedef struct colour {
 } color;
 
 typedef struct palette {
-	color c[16];
+	u16 c[16];
 } palette;
 
 palette *palette_bg_unfaded = (palette*) 0x020371F8;
 palette *palette_obj_unfaded = (palette*) 0x020373F8;
 palette *palette_bg_faded = (palette*) 0x020375F8;
 palette *palette_obj_faded = (palette*) 0x020377F8;
+
+u8 gpu_pal_tags_index_of(u16 tag);
 
 #endif
