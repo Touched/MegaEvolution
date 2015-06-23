@@ -160,6 +160,12 @@ void healthbar_trigger_callback(object *self) {
 }
 
 void healthbar_indicator_callback(object *self) {
+	// Visibility
+	if (!is_mega(&bdata[self->private[0]])) {
+		self->x = -8;
+		return;
+	}
+
 	object *healthbox = get_healthbox_objid(self->private[0]);
 	
 	u8 y = (u8) healthbox->final_oam.attr0,
@@ -200,11 +206,9 @@ void healthbar_indicator_callback(object *self) {
 		self->x = -8;
 	}
 	
-	// Mirror healthbox priority
+	// Mirror healthbox priority and 
 	u8 priority = ((healthbox->final_oam.attr2 >> 10) & 3);
 	self->final_oam.attr2 = (self->final_oam.attr2 & ~0xC00) | (priority << 10);
-	
-	// TODO: Visibility
 }
 
 void healthbar_load_graphics(u8 state) {
