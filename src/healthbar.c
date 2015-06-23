@@ -75,7 +75,6 @@ void healthbar_indicator_callback(object *self) {
 	u8 y = (u8) healthbox->final_oam.attr0,
 		x =  (healthbox->final_oam.attr1 & 0x1FF);
 		
-	// TODO: Determine font width of level and adjust x pos accordingly
 	if (y) {
 		// Figure out the X position for the indicator - it differs depending on
 		// the battle type and the side the healthbox represents.
