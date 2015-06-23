@@ -44,6 +44,9 @@ void command() {
 	
 	set_species(evo->species);
 	
+	// Update health box (to hide level text)
+	((void(*)(void)) (0x80E81F0 + 1))();
+	
 	// TODO: Support no message (for primals)
 	special_strcpy((u8*) buffer, (u8*) str_before[evo->unknown]);
 	show_message(buffer);
