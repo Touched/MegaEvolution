@@ -110,6 +110,8 @@ void revert_mega(u8 *poke) {
 	}
 }
 
+void reset_mega();
+
 void revert_megas() {
 	u8 *player_party = (u8*) 0x02024284;
 	u8 *poke_quantity = (u8*) 0x02024029;
@@ -118,6 +120,8 @@ void revert_megas() {
 	for (i = 0; i < *poke_quantity; ++i) {
 		revert_mega(player_party + i * 100);
 	}
+
+	reset_mega();
 }
 
 void reset_mega() {
