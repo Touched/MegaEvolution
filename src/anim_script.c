@@ -1,6 +1,7 @@
 #include "types.h"
 #include "animscript.h"
 #include "common.h"
+#include "battle.h"
 
 #define MEGA_ANIM_PARTICLE_RAINBOW 1
 #define MEGA_ANIM_PARTICLE_STONE 2
@@ -112,17 +113,7 @@ u8 *party_player = (u8*) 0x02024284;
 u8 *party_opponent = (u8*) 0x0202402C;
 
 void task_ma_cry(u8 index) {
-	u8 *pokemon;
-
-	// Determine the species
-	if ( battle_side_get_owner(*b_anim_attacker) << 24 ) {
-		pokemon = party_opponent;
-	}
-	else {
-		pokemon = party_player;
-	}
-	pokemon += 100 * b_pokemon_team_id_by_side[*b_anim_attacker];
-	u16 species = (u16) (u32) pokemon_getattr(pokemon, 0xB, 0);
+	u16 species = bdata[*b_current_bank].species;
 	
 	// Play the cry and end the task immediately
 	play_cry_maybe(species);
