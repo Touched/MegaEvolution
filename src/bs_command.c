@@ -35,6 +35,8 @@ battle_data *get_battle_data() {
 	return (battle_data *) (0x02023BE4 + sizeof(battle_data) * *b_current_bank);
 }
 
+void healthbar_update(u8 bank);
+
 void wait_for_message();
 void command() {
 	char *buffer = (char*) 0x0202298C;
@@ -45,7 +47,8 @@ void command() {
 	set_species(evo->species);
 	
 	// Update health box (to hide level text)
-	((void(*)(void)) (0x80E81F0 + 1))();
+	//((void(*)(void)) (0x80E81F0 + 1))();
+	healthbar_update(*b_current_bank);
 	
 	// TODO: Support no message (for primals)
 	special_strcpy((u8*) buffer, (u8*) str_before[evo->unknown]);

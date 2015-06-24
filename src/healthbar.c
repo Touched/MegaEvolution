@@ -233,6 +233,12 @@ void healthbar_load_graphics(u8 state) {
 	}
 }
 
+void healthbar_update(u8 bank) {
+	u8 *healthbox_objid_by_side = (u8*) 0x03004FF0;
+	
+	u8 id = team_index_by_side[bank];
+	healthbar_draw_field(healthbox_objid_by_side[bank], team + id * 100, 0);
+}
 
 void healthbar_display_graphics() {
 	//gpu_tile_obj_decompress_alloc_tag_and_upload(&gfx_healthbar);
