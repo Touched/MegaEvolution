@@ -165,8 +165,13 @@ void healthbar_indicator_callback(object *self) {
 		self->x = -8;
 		return;
 	}
-
+	
 	object *healthbox = get_healthbox_objid(self->private[0]);
+	
+	if (healthbox->bitfield2 & 4) {
+		self->x = -8;
+		return;
+	}
 	
 	u8 y = (u8) healthbox->final_oam.attr0,
 		x =  (healthbox->final_oam.attr1 & 0x1FF);
