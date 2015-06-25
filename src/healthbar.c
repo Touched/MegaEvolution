@@ -100,13 +100,14 @@ void healthbar_trigger_callback(object *self) {
 	
 	u8 y = (u8) healthbox->final_oam.attr0;
 
-	object *ping = &objects[5];
+	u8 pingid = dp11_ptr->b[*b_current_bank].objid_2;
+	object *ping = &objects[pingid]; 
 	if (y) {
 		// Copy the healthbox's position (it has various animations)
 		//self->y = healthbox->y + 20;
 		self->x = (healthbox->final_oam.attr1 & 0x1FF) - 5 + self->private[3];
 		self->y2 = get_pingpong(ping->private[0], ping->private[2]);
-		self->y = healthbox->y;
+		self->y = healthbox->y + 4;
 	} else {
 		// The box is offscreen, so hide this one as well
 		self->x = -32;
@@ -143,8 +144,8 @@ void healthbar_trigger_callback(object *self) {
 		palette *pal = &palette_obj_faded[gpu_pal_tags_index_of(0x2345)];
 		u8 i;
 		
-		for(i = 0; i < 16; i++) {
-			if (i == 0 || i == 15 || i == 3 || i == 2 || i == 8) continue;
+		for(i = 1; i < 16; i++) {
+			//if (i == 0 || i == 15 || i == 3 || i == 2 || i == 8) continue;
 			
 			if (self->private[1] == 1) {
 				pal->c[i] = calcEnabled(mega_triggerPal[i]);
@@ -197,7 +198,6 @@ void healthbar_indicator_callback(object *self) {
 		// the string length
 		self->x = x + shift - 5 * stringlen;
 		
-		// TODO: Determine correct index programmatically
 		u8 pingid = dp11_ptr->b[self->private[0]].objid_2;
 		object *ping = &objects[pingid]; 
 		

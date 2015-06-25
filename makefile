@@ -21,7 +21,7 @@ static_assets:
 	
 images:
 	grit assets/indicators.png -gzl -gB 4 -ftc -fh -pe16 -gu8 -o src/images/indicators.c
-	grit assets/mega_trigger.png -gzl -gB 4 -ftc -fh -pe16 -gu8 -o src/images/mega_trigger.c
+	grit assets/mega_trigger.png -gzl -gB 4 -ftc -fh -pe16 -pT1 -gu8 -o src/images/mega_trigger.c
 
 command:
 	$(CC) $(CFLAGS) -c src/bs_command.c -o build/bs_command.o
