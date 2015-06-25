@@ -102,6 +102,10 @@ with open('test.gba', 'rb+') as rom:
 	#rom.seek(move_index * 4 + 0x1C68F4)
 	#rom.write(loc.to_bytes(4, 'little'))
 	
+	# Stupid
+	hook(rom, table['create_shaker_hook'], 0x04BE80, 3)
+	hook(rom, table['objc_shaker_hook'], 0x04BEDC, 2)
+	
 	# FFS Copy hex
 	stupid = {
 		'anim_rainbow_y': 24,
