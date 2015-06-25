@@ -176,6 +176,10 @@ void healthbar_indicator_callback(object *self) {
 	u8 y = (u8) healthbox->final_oam.attr0,
 		x =  (healthbox->final_oam.attr1 & 0x1FF);
 		
+	// Mirror healthbox priority
+	u8 priority = ((healthbox->final_oam.attr2 >> 10) & 3);
+	self->final_oam.attr2 = (self->final_oam.attr2 & ~0xC00) | (priority << 10);
+		
 	if (y) {
 		// Figure out the X position for the indicator - it differs depending on
 		// the battle type and the side the healthbox represents.
@@ -202,21 +206,29 @@ void healthbar_indicator_callback(object *self) {
 		object *ping = &objects[pingid]; 
 		
 		u8 pingpong_active = (dp11_ptr->b[self->private[0]].field0 & 6);
+		u8 *shaker_data = (u8*) 0x02022AD0;
+		
+		object *shaker = &objects[shaker_data[1]];
+		u8 *healthbox_objid_by_side = (u8*) 0x03004FF0;
+		u8 hbid = healthbox_objid_by_side[self->private[0]];
+		
 		if (pingpong_active) {
 			// objc_dp11b_pingpong
 			self->y = healthbox->y - 4;
 			self->y2 = get_pingpong(ping->private[0], ping->private[2]);
-		} else {
-			//self->y = y + 11;
-			//self->y2 = 0;
+			return;
+		} else if (shaker->private[1] == hbid && shaker->private[2] <= 21) {
+			self->y2 = shaker->private[0];
+			return;
 		}
+		
+		// Fix indicator position
+		self->y = healthbox->y - 5;
+		self->y2 = 0;
+		self->x2 = 0;
 	} else {
 		self->x = -8;
 	}
-	
-	// Mirror healthbox priority and 
-	u8 priority = ((healthbox->final_oam.attr2 >> 10) & 3);
-	self->final_oam.attr2 = (self->final_oam.attr2 & ~0xC00) | (priority << 10);
 }
 
 void healthbar_load_graphics(u8 state) {
