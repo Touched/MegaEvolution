@@ -38,9 +38,9 @@ battle_data *get_battle_data() {
 void healthbar_update(u8 bank);
 
 void wait_for_message();
+void AGBPrint(const char *);
 void command() {
 	char *buffer = (char*) 0x0202298C;
-	
 	// Read species from the buffer
 	evolution *evo = get_evolution_data();
 	

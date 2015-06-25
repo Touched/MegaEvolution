@@ -100,7 +100,7 @@ void healthbar_trigger_callback(object *self) {
 	
 	u8 y = (u8) healthbox->final_oam.attr0;
 
-	object *ping = &objects[6];
+	object *ping = &objects[5];
 	if (y) {
 		// Copy the healthbox's position (it has various animations)
 		//self->y = healthbox->y + 20;
@@ -165,7 +165,6 @@ void healthbar_indicator_callback(object *self) {
 		self->x = -8;
 		return;
 	}
-	
 	object *healthbox = get_healthbox_objid(self->private[0]);
 	
 	if (healthbox->bitfield2 & 4) {
@@ -198,14 +197,18 @@ void healthbar_indicator_callback(object *self) {
 		// the string length
 		self->x = x + shift - 5 * stringlen;
 		
-		object *ping = &objects[6]; // TODO: Determine correct index programmatically
-		if (ping->callback == 0x08012309 && self->private[0] == *b_attacker) {
+		// TODO: Determine correct index programmatically
+		u8 pingid = dp11_ptr->b[self->private[0]].objid_2;
+		object *ping = &objects[pingid]; 
+		
+		u8 pingpong_active = (dp11_ptr->b[self->private[0]].field0 & 6);
+		if (pingpong_active) {
 			// objc_dp11b_pingpong
 			self->y = healthbox->y - 4;
 			self->y2 = get_pingpong(ping->private[0], ping->private[2]);
 		} else {
-			self->y = y + 11;
-			self->y2 = 0;
+			//self->y = y + 11;
+			//self->y2 = 0;
 		}
 	} else {
 		self->x = -8;

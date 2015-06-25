@@ -43,4 +43,30 @@ u32 *battle_type_flags = (u32*) (0x02022B4C);
 u8 *b_num_active_sides = (u8*) 0x02023BCC;
 u32 *b_x = (u32 *) 0x03004FE0;
 
+#pragma pack(push, 1)
+typedef struct dp11b
+{
+	u8 field0;
+	u8 field1;
+	u8 objid_2;
+	u8 objid_3;
+	u8 field4;
+	u8 field5;
+	u16 gap_6;
+	u8 field8;
+	u16 field9;
+	u8 fieldB;
+} dp11b;
+#pragma pack(pop)
+
+typedef struct dp11
+{
+	u32 *a;
+	dp11b *b;
+	u32 c;
+	u32 d;
+} dp11;
+
+dp11 *dp11_ptr;// = (dp11*) 0x02024018;
+
 #endif 
