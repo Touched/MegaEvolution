@@ -88,7 +88,6 @@ with open('test.gba', 'rb+') as rom:
 		
 	hook(rom, table['command'], 0x033224, 2)
 	hook(rom, table['command'], 0x038A50, 2) # 08250A34
-	hook(rom, table['move_hook'], 0x01D040, 2)
 	hook(rom, table['move_button_hook'], 0x02EC10, 0)
 	hook(rom, table['exit_battle_hook'], 0x0159DC, 0)
 	hook(rom, table['faint_hook'], 0x0326C4, 3)
@@ -105,6 +104,9 @@ with open('test.gba', 'rb+') as rom:
 	# Stupid
 	hook(rom, table['create_shaker_hook'], 0x04BE80, 3)
 	hook(rom, table['objc_shaker_hook'], 0x04BEDC, 2)
+	
+	# Main
+	hook(rom, table['attack_canceller_hook'], 0x01D76C, 1)
 	
 	# FFS Copy hex
 	stupid = {

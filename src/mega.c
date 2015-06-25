@@ -64,11 +64,13 @@ void build_cmdbuf_mega(u8 arg, u16 len, u8 **data);
 void mark_buffer_for_execution(u8 arg);
 
 void handle_mega_evolution() {
-	if (!megadata->trigger[*b_current_bank]) return;
+	u8 bank = *b_attacker;
+
+	if (!megadata->trigger[bank]) return;
 	// Unset the trigger
-	megadata->trigger[*b_current_bank] = 0;
+	megadata->trigger[bank] = 0;
 	
-	battle_data *data = &bdata[*b_current_bank];
+	battle_data *data = &bdata[bank];
 	evolution *evo = can_mega_evolve(data);
 	
 	// Make sure we only mega evolve once. Primals are exempt
@@ -82,7 +84,7 @@ void handle_mega_evolution() {
 	if (evo) {
 		build_cmdbuf_mega(0, 4, (u8**) &evo);
 		//mark_buffer_for_execution(0);
-		*((u32*) 0x02023BC8) = 1 << (*b_current_bank);
+		*((u32*) 0x02023BC8) = 1 << (bank);
 	}
 }
 

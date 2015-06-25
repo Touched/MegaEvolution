@@ -1,36 +1,19 @@
-@@action hook 0x01D040 2
-
 .thumb
+
+@ 0801D76C in r1
 .align 2
-
-move_hook:
-	push {r0-r3}
-	bl handle_mega_evolution
-	pop {r0-r3}
-
-return:
+attack_canceller_hook:
 	ldrb r0, [r0]
-	lsl r0, #2
-	add r0, r1
-	ldr r0, [r0]
-	bl call_via_r0
-	pop {pc}
-	
-call_via_r0:
+	cmp r0, #0
+	beq go
+	ldr r1, =0x02023BE3 
+	ldr r0, =(0x0801D774 + 1)
 	bx r0
 	
-call_via_r3:
-	bx r3
-	
-do_once:
-	mov r3, #0x22
-	strb r3, [r2]
-	
+go:
 	push {r0-r3}
 	bl handle_mega_evolution
 	pop {r0-r3}
 	
-	b return
-	
-.align 2
-ram_loc: .word 0x020370B8
+	ldr r0, =(0x0801D784 + 1)
+	bx r0
