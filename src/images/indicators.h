@@ -9,7 +9,7 @@
 //	+ 3 tiles lz77 compressed
 //	Total size: 32 + 112 = 144
 //
-//	Time-stamp: 2015-06-25, 20:14:38
+//	Time-stamp: 2015-06-25, 20:29:09
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.12
 //	( http://www.coranac.com/projects/#grit )
 //

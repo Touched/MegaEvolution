@@ -217,8 +217,8 @@ void healthbar_indicator_callback(object *self) {
 			self->y = healthbox->y - 4;
 			self->y2 = get_pingpong(ping->private[0], ping->private[2]);
 			return;
-		} else if (shaker->private[1] == hbid && shaker->private[2] <= 21) {
-			self->y2 = shaker->private[0];
+		} else if (shaker->private[1] == hbid && *shaker_data) {
+			self->y2 = (shaker->private[2] & 1) ? -1 : 1;
 			return;
 		}
 		
