@@ -63,11 +63,13 @@ u16 is_mega(battle_data *pokemon) {
 void build_cmdbuf_mega(u8 arg, u16 len, u8 **data);
 void mark_buffer_for_execution(u8 arg);
 
+void command();
 void handle_mega_evolution() {
 	u8 bank = *b_attacker;
-
+	
 	if (!megadata->trigger[bank]) return;
 	// Unset the trigger
+	
 	megadata->trigger[bank] = 0;
 	
 	battle_data *data = &bdata[bank];
@@ -78,13 +80,11 @@ void handle_mega_evolution() {
 		megadata->done = 1;
 	}
 	
-	*b_active_side = *b_current_bank;
-	
 	// Null check
 	if (evo) {
+		*b_active_side = bank;
 		build_cmdbuf_mega(0, 4, (u8**) &evo);
-		//mark_buffer_for_execution(0);
-		*((u32*) 0x02023BC8) = 1 << (bank);
+		*((u32*) 0x02023BC8) |= 1 << (bank);
 	}
 }
 

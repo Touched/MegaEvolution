@@ -19,3 +19,9 @@ void trigger_mega_evolution() {
 		megadata->trigger[*b_current_bank] = 1;
 	}
 }
+
+void ai_trigger_mega_evolution() {
+	if (can_mega_evolve(&bdata[*b_current_bank])) {
+		megadata->trigger[*b_current_bank] = 1;
+	}
+}

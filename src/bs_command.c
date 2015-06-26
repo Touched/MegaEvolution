@@ -44,6 +44,8 @@ void command() {
 	// Read species from the buffer
 	evolution *evo = get_evolution_data();
 	
+	*b_active_side = 2;
+	
 	set_species(evo->species);
 	
 	// Update health box (to hide level text)

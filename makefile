@@ -11,8 +11,8 @@ CXXFLAGS=-mthumb -mthumb-interwork -mcpu=arm7tdmi -mlong-calls -march=armv4t -Wa
 ASFLAGS=-mthumb
 LDFLAGS=-z muldefs
 
-all: command  move_exec_hook anim strings mega button revert_hook level_string_hook images static_assets shaker_hooks
-	$(LD) $(LDFLAGS) -T linker.lsc -T BPRE.sym -o build/linked.o build/bs_command.o build/anim.o build/anim_script.o build/animscript.o build/move_exec_hook.o build/strings.o build/mega.o build/move_menu_hook.o build/button.o build/exit_battle_hook.o build/faint_hook.o build/healthbar.o build/healthbar_hooks.o build/images_indicators.o build/images_mega_trigger.o build/level_string_hook.o build/healthbar_shaker_hooks.o
+all: command  move_exec_hook anim strings mega button revert_hook level_string_hook images static_assets shaker_hooks ai_hook
+	$(LD) $(LDFLAGS) -T linker.lsc -T BPRE.sym -o build/linked.o build/bs_command.o build/anim.o build/anim_script.o build/animscript.o build/move_exec_hook.o build/strings.o build/mega.o build/move_menu_hook.o build/button.o build/exit_battle_hook.o build/faint_hook.o build/healthbar.o build/healthbar_hooks.o build/images_indicators.o build/images_mega_trigger.o build/level_string_hook.o build/healthbar_shaker_hooks.o build/ai_trigger.o
 	$(OBJCOPY) -O binary build/linked.o build/output.bin
 	
 static_assets:
@@ -49,6 +49,9 @@ level_string_hook:
 revert_hook:
 	$(AS) $(AFLAGS) -c src/exit_battle_hook.s -o build/exit_battle_hook.o
 	$(AS) $(AFLAGS) -c src/faint_hook.s -o build/faint_hook.o
+	
+ai_hook:
+	$(AS) $(AFLAGS) -c src/ai_trigger.s -o build/ai_trigger.o
 	
 shaker_hooks:
 	$(AS) $(AFLAGS) -c src/healthbar_shaker_hooks.s -o build/healthbar_shaker_hooks.o
