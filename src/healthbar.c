@@ -92,6 +92,15 @@ void healthbar_trigger_callback(object *self) {
 		self->x = -32;
 		return;
 	}
+	
+	s16 xshift, yshift;
+	if (*battle_type_flags & 1) {
+		xshift = -6;
+		yshift = 0;
+	} else {
+		xshift = -5;
+		yshift = 2;
+	}
 
 	// Find the health box object that this trigger is supposed to be attached to
 	u8 *healthbox_objid_by_side = (u8*) 0x03004FF0;
@@ -105,9 +114,9 @@ void healthbar_trigger_callback(object *self) {
 	if (y) {
 		// Copy the healthbox's position (it has various animations)
 		//self->y = healthbox->y + 20;
-		self->x = (healthbox->final_oam.attr1 & 0x1FF) - 5 + self->private[3];
+		self->x = (healthbox->final_oam.attr1 & 0x1FF) + xshift + self->private[3];
 		self->y2 = get_pingpong(ping->private[0], ping->private[2]);
-		self->y = healthbox->y + 4;
+		self->y = healthbox->y + yshift;
 	} else {
 		// The box is offscreen, so hide this one as well
 		self->x = -32;
