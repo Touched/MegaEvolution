@@ -12,3 +12,8 @@ mechanics (Primal Reversion, etc.)
 - Create a directory called 'build' in the project root.
 - Run `make && ./insert.py`. This will create test.gba in the project root.
 - For future builds you might want to run `make && ./insert.py && vba-sdl-h test.gba` to run the emulator after a successful build.
+
+## Credits
+- MrDollSteak: Animation Script and Graphics
+- Bela: Graphics
+- daniilS: Miscellaneous code fixes
