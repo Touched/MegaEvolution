@@ -145,6 +145,17 @@ char *item_name(u16 index) {
 	return (char *) (0x083DB028 + index * 0x2C);
 }
 
+char *get_trainer_name() {
+  if (CURRENT_BANK & 1) {
+    u16 *trainer_flag = (u16*) 0x020386AE;
+    u8 *trainers = (u8*) 0x0823EAC8;
+  
+    return trainers + *trainer_flag * 0x28 + 4;
+  } else {
+    return *((u8**) 0x0300500C);
+  }
+}
+
 void special_strcpy(u8 *dest, u8 *src) {
 	u8 ch;
 	u8 *data = get_pokemon_data();
@@ -169,7 +180,8 @@ void special_strcpy(u8 *dest, u8 *src) {
 			// Trainer's name
 			case 2:
 				// TODO: Load trainer name if enemy is mega evolving
-				buf = *((u8**) 0x0300500C);
+				//buf = *((u8**) 0x0300500C);
+			  buf = get_trainer_name();
 				break;
 			// Trainer's accessory
 			case 3:
