@@ -5,12 +5,12 @@
 
 // Basic types
 #define ANIM_LONG(x) (u8) (((u32) (x)) & 0xFF), \
-	(u8) ((((u32) (x)) & 0xFF00) >> 8), \
-	(u8) ((((u32) (x)) & 0xFF0000) >> 16), \
-	(u8) ((((u32) (x)) & 0xFF000000) >> 24)
+    (u8) ((((u32) (x)) & 0xFF00) >> 8),		\
+    (u8) ((((u32) (x)) & 0xFF0000) >> 16),	\
+    (u8) ((((u32) (x)) & 0xFF000000) >> 24)
 	
-#define ANIM_SHORT(x) (u8) (((u32) (x)) & 0xFF), \
-	(u8) ((((u32) (x)) & 0xFF00) >> 8)
+#define ANIM_SHORT(x) (u8) (((u32) (x)) & 0xFF),	\
+    (u8) ((((u32) (x)) & 0xFF00) >> 8)
 	
 // Script commands
 // Table at 083ADF5C

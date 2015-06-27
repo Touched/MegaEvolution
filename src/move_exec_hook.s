@@ -1,8 +1,8 @@
-.thumb
+	.thumb
 
-@ 0801DB00 in r1
-.align 2
-attack_canceller_hook:
+	@ 0801DB00 in r1
+	.align 2
+	attack_canceller_hook:
 	bl handle_mega_evolution
 	mov r8, r3
 	mov r9, r4

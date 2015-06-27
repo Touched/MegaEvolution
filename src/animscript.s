@@ -1,17 +1,17 @@
-.global mega_animation_script
+	.global mega_animation_script
 
-.equ ANIM_XX, 0x27a3
-.equ ANIM_YY, 0x281b
-.equ ANIM_ZZ, 0x27d8
+	.equ ANIM_XX, 0x27a3
+	.equ ANIM_YY, 0x281b
+	.equ ANIM_ZZ, 0x27d8
 
-.align 2
-anim_rainbow_y: 
+	.align 2
+	anim_rainbow_y: 
 	.short ANIM_XX, ANIM_XX
 	.byte 0x50, 0xcb, 0x3a, 0x8, 0x40, 0x2a, 0x3e, 0x8, 0x0, 0x0, 0x0, 0x0
 	.byte 0x54, 0x2a, 0x3e, 0x8, 0x89, 0x23, 0xa, 0x8
 
-.align 2
-anim_rainbow_x:
+	.align 2
+	anim_rainbow_x:
 	.byte 0x2
 	.long anim_rainbow_y
 	.byte 0x2, 0x3, 0x28, 0x0, 0xF6, 0xFF, 0xD, 0x0, 0x4, 0x3
@@ -42,20 +42,20 @@ anim_rainbow_x:
 	
 	.byte 0xf
 
-.align 2	
-anim_mega_stone_x:
+	.align 2	
+	anim_mega_stone_x:
 	.short ANIM_YY, ANIM_YY
 	.byte 0xc0, 0xcb, 0x3a, 0x8, 0xf0, 0x1c, 0x23, 0x8, 0x0, 0x0, 0x0, 0x0
 	.byte 0x44, 0x71, 0x3e, 0x8, 0x9d, 0x5d, 0x7, 0x8
 
-.align 2
-anim_mega_symbol_x:
+	.align 2
+	anim_mega_symbol_x:
 	.short ANIM_ZZ, ANIM_ZZ
 	.byte 0xf8, 0xca, 0x3a, 0x8, 0xf0, 0x1c, 0x23, 0x8, 0x0, 0x0, 0x0, 0x0
 	.byte 0xfc, 0x1c, 0x23, 0x8, 0xd5, 0x67, 0xb, 0x8
 
-.align 2
-mega_animation_script_data:
+	.align 2
+	mega_animation_script_data:
 	@ Buffer particles
 	.byte 0
 	.short ANIM_XX
@@ -101,7 +101,7 @@ mega_animation_script_data:
 	
 	@ Yay Update Sprite
 	.byte 3
- 	.word task_ma_swap_sprites + 1 @ C function in anim_script
+	 	.word task_ma_swap_sprites + 1 @ C function in anim_script
 	.byte 2, 0
 	@.byte 0xb, 0x2 @ Trigger refresh
 	@.byte 3
@@ -139,6 +139,6 @@ mega_animation_script_data:
 	@ End
 	.byte 0x8
 
-@ C function requires a pointer to the script data
-.align 2	
-mega_animation_script: .long mega_animation_script_data
+	@ C function requires a pointer to the script data
+	.align 2	
+	mega_animation_script: .long mega_animation_script_data

@@ -2,13 +2,13 @@
 #define GRAPHICS_H_
 
 typedef struct colour {
-	u16 r : 5;
-	u16 g : 5;
-	u16 b : 5;
+  u16 r : 5;
+  u16 g : 5;
+  u16 b : 5;
 } color;
 
 typedef struct palette {
-	u16 c[16];
+  u16 c[16];
 } palette;
 
 palette *palette_bg_unfaded = (palette*) 0x020371F8;

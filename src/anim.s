@@ -1,16 +1,16 @@
-@ Modded function to load an animation script from a pointer rather than a table
-@ I was surpised that this didn't exist, but it appears GF has a fetish for code
-@ duplication. 
+	@ Modded function to load an animation script from a pointer rather than a table
+	@ I was surpised that this didn't exist, but it appears GF has a fetish for code
+	@ duplication. 
 
-.thumb
-.global animation_script_start
+	.thumb
+	.global animation_script_start
 
-@ void animation_script_start(u8 *script, u8 attacker, u8 defender)
-.align 2
+	@ void animation_script_start(u8 *script, u8 attacker, u8 defender)
+	.align 2
 
-@ Essential
-.thumb_func
-animation_script_start:
+	@ Essential
+	.thumb_func
+	animation_script_start:
 	push {r4, lr}
 
 	ldr r3, =0x02037F1A
@@ -40,6 +40,6 @@ animation_script_start:
 	ldr r3, =(0x080341F6 + 1)
 	bx r3
 	
-call_via_r3:
+	call_via_r3:
 	bx r3
 	

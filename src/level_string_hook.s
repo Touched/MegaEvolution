@@ -1,9 +1,9 @@
-@ hook at 080483A4
+	@ hook at 080483A4
 
-.thumb
-.align 2
+	.thumb
+	.align 2
 
-level_string_hook:
+	level_string_hook:
 	lsl r4, #0x18
 	lsr r4, #0x18
 	
@@ -46,7 +46,7 @@ level_string_hook:
 	sub r1, #2
 	b return
 	
-load_special:
+	load_special:
 	adr r1, special_string
 	mov r0, sp
 	mov r2, #0x10
@@ -76,24 +76,24 @@ load_special:
 	ldr r6, =(0x080483D6 + 1)
 	bx r6
 	
-return:	
+	return:	
 	ldr r6, =(0x080483C4 + 1)
 	bx r6
 	
-int_to_str:
+	int_to_str:
 	ldr r6, =(0x08008E78 + 1)
 	bx r6
 	
-memcpy:
+	memcpy:
 	ldr r3, =(0x081E5E78 + 1)
 	bx r3
 	
-.align 2
-level_string: .word 0x0826051C
-battle_data: .word 0x02023BE4
-b_current_bank: .word 0x02023D6F
-objects: .word 0x0202063C
-special_string:
+	.align 2
+	level_string: .word 0x0826051C
+	battle_data: .word 0x02023BE4
+	b_current_bank: .word 0x02023D6F
+	objects: .word 0x0202063C
+	special_string:
 	.byte 0xFF
 	.rept 16
 	.byte 0

@@ -1,8 +1,8 @@
-@ hook at 080159DC
-.thumb
-.align 2
+	@ hook at 080159DC
+	.thumb
+	.align 2
 
-exit_battle_hook:
+	exit_battle_hook:
 	bl revert_megas
 
 	ldr r1, =(0x03004F84)

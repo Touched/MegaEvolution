@@ -4,10 +4,10 @@
 #include "types.h"
 
 typedef struct evolution {
-	u16 type;
-	u16 argument;
-	u16 species;
-	u16 unknown;
+  u16 type;
+  u16 argument;
+  u16 species;
+  u16 unknown;
 } evolution;
 
 evolution **evolution_table = (evolution**) 0x08259754;
