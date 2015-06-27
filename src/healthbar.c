@@ -264,9 +264,11 @@ void healthbar_load_graphics(u8 state) {
 
 void healthbar_update(u8 bank) {
 	u8 *healthbox_objid_by_side = (u8*) 0x03004FF0;
-	
+
+	u8 *current_team = (bank & 1) ? enemy_team : team;
 	u8 id = team_index_by_side[bank];
-	healthbar_draw_field(healthbox_objid_by_side[bank], team + id * 100, 0);
+
+	healthbar_draw_field(healthbox_objid_by_side[bank], current_team + id * 100, 0);
 }
 
 void healthbar_display_graphics() {

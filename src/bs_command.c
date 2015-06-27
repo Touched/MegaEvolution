@@ -49,7 +49,10 @@ void command() {
 	set_species(evo->species);
 	
 	// Update health box (to hide level text)
-	healthbar_update(CURRENT_BANK);
+	if (CURRENT_BANK & 1) {
+	} else {
+	  healthbar_update(CURRENT_BANK);
+	}
 	
 	// TODO: Support no message (for primals)fg
 	special_strcpy((u8*) buffer, (u8*) str_before[evo->unknown]);
