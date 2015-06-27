@@ -106,7 +106,8 @@ void revert_mega(u8 *poke) {
 	
 	u16 current_species = pokemon_getattr(poke, 0xB, 0);
 	
-	evolution *evolutions = (evolution*) ((u32) evolution_table + current_species * sizeof(evolution) * (*evos_per_poke + 1));
+	evolution *evolutions = (evolution*) ((u32) evolution_table + current_species 
+					      * sizeof(evolution) * (*evos_per_poke + 1));
 	u8 i;
 	
 	for (i = 0; i <= *evos_per_poke; ++i) {
