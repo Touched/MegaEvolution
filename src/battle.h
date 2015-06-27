@@ -38,6 +38,7 @@ u8 *b_defender = (u8*) 0x02023D6C;
 u8 *b_current_bank = (u8*) 0x02023D6F;
 u16 *team_index_by_side = (u16*) 0x02023BCE;
 u8 *team = (u8*) 0x02024284;
+u8 *enemy_team = (u8*) 0x0202402C;
 battle_data *bdata = (battle_data *) (0x02023BE4);
 u32 *battle_type_flags = (u32*) (0x02022B4C);
 u8 *b_num_active_sides = (u8*) 0x02023BCC;
