@@ -30,6 +30,7 @@ get_pingpong = 0x08044E31;
 int_to_str = 0x08008E79;
 gpu_pal_tags_index_of = 0x080089E9;
 healthbar_draw_field = 0x08049D99;
+var_access = 0x0806E455;
 
 dp11_ptr = 0x02024018;
 
