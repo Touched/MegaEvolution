@@ -1,4 +1,5 @@
-exec_completed = 0x0802E33D;
+exec_completed_tbl1 = 0x0802E33D;
+exec_completed_tbl2 = 0x08036531;
 pokemon_getattr = 0x0803FBE9;
 pokemon_setattr = 0x0804037D;
 recalc_stats = 0x0803E47D;

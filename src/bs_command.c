@@ -189,6 +189,14 @@ void special_strcpy(u8 *dest, u8 *src) {
 	*dest = 0xFF;
 }
 
+void exec_completed() {
+  if (CURRENT_BANK & 1) {
+    exec_completed_tbl2();
+  } else {
+    exec_completed_tbl1();
+  }
+};
+
 void delay_before_end() {
 	u16 *timer = (u16*) 0x02023D7E;
 	

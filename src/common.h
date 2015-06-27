@@ -1,7 +1,8 @@
 #ifndef COMMON_H_
 #define COMMON_H_
 
-void exec_completed();
+void exec_completed_tbl1();
+void exec_completed_tbl2();
 u8 *pokemon_getattr(u8 *data, u8 attr, u8 *ret);
 void pokemon_setattr(u8 *data, u8 attr, u8 *value);
 void gf_strcat(char *dest, char *src);
