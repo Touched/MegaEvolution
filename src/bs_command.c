@@ -158,7 +158,15 @@ char *get_trainer_name() {
 }
 
 u16 get_keystone_index() {
-  return 0x161;
+  u16 *var;
+  if (CURRENT_BANK & 1) {
+    var = var_access(KEYSTONE_OPPONENT_VAR);
+  } else {
+    var = var_access(KEYSTONE_PLAYER_VAR);
+  }
+
+  u16 item = *var;
+  return item ? item : KEYSTONE_DEFAULT;
 }
 
 void special_strcpy(u8 *dest, u8 *src) {
