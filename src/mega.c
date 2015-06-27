@@ -82,10 +82,22 @@ void handle_mega_evolution() {
 	
 	// Null check
 	if (evo) {
-		*b_active_side = bank;
-		build_cmdbuf_mega(0, 4, (u8**) &evo);
-		*((u32*) 0x02023BC8) |= 1 << (bank);
+	  *b_active_side = bank;
+	  build_cmdbuf_mega(0, 4, (u8**) &evo);
+	  /* u8 *dest = (u8*) (0x02022BC4 + 0x200 * bank); */
+	  /* u32 data = (u32) evo; */
+
+	  /* *dest++ = 0x20;	/\* command index *\/ */
+	  /* *dest++ = 4;		/\* byte count *\/ */
+	  /* *dest++ = 0; */
+	  /* *dest++ = data & 0xFF; */
+	  /* *dest++ = (data >> 8) & 0xFF; */
+	  /* *dest++ = (data >> 16) & 0xFF; */
+	  /* *dest = (data >> 24) & 0xFF; */
+	  
+	  	*((u32*) 0x02023BC8) |= 1 << (bank);
 	}
+
 }
 
 void revert_mega(u8 *poke) {

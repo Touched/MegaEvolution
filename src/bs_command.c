@@ -11,6 +11,8 @@
 #include "text.h"
 #include "evo.h"
 
+#define CURRENT_BANK (*b_attacker)
+
 void set_species(u16 index);
 void show_message(char *buf);
 u8 *get_pokemon_data();
@@ -26,13 +28,13 @@ void animation_script_start(u8 *script, u8 attacker, u8 defender);
 extern void play_mega_evolution(u8 attacker, u8 defender);
 
 evolution *get_evolution_data() {
-	u8 *buffer_A = (u8*) (0x02022BC4 + *b_active_side * 0x200);
+	u8 *buffer_A = (u8*) (0x02022BC4 + CURRENT_BANK * 0x200);
 	return (evolution*) (buffer_A[3] | (buffer_A[4] << 8) | (buffer_A[5] << 16) | (buffer_A[6] << 24));
 }
 
 battle_data *get_battle_data() {
 	// TODO: Calculate correctnessssssss
-	return (battle_data *) (0x02023BE4 + sizeof(battle_data) * *b_current_bank);
+	return (battle_data *) (0x02023BE4 + sizeof(battle_data) * CURRENT_BANK);
 }
 
 void healthbar_update(u8 bank);
@@ -44,15 +46,12 @@ void command() {
 	// Read species from the buffer
 	evolution *evo = get_evolution_data();
 	
-	*b_active_side = 2;
-	
 	set_species(evo->species);
 	
 	// Update health box (to hide level text)
-	//((void(*)(void)) (0x80E81F0 + 1))();
-	healthbar_update(*b_current_bank);
+	healthbar_update(CURRENT_BANK);
 	
-	// TODO: Support no message (for primals)
+	// TODO: Support no message (for primals)fg
 	special_strcpy((u8*) buffer, (u8*) str_before[evo->unknown]);
 	show_message(buffer);
 		
@@ -238,7 +237,7 @@ void delay_for_animation() {
 		(*timer)--;
 	} else {
 		*timer = 0xFF;
-		play_mega_evolution(*b_current_bank, 1);
+		play_mega_evolution(CURRENT_BANK, 1);
 		set_b_x_callback((bxcb) wait_for_animation);
 	}
 }
@@ -269,7 +268,7 @@ void show_message(char *buf) {
 
 void set_b_x_callback(bxcb callback) {
 	bxcb *bx = ((bxcb*) 0x03004FE0);
-	bx[*b_current_bank] = callback;
+	bx[CURRENT_BANK] = callback;
 }
 
 u8 *get_pokemon_data() {
@@ -277,7 +276,7 @@ u8 *get_pokemon_data() {
 	u8 *active_side = (u8*) 0x02023BC4;
 	u8 *team = (u8*) 0x02024284;
 	
-	team_index_by_side += *active_side << 1;
+	team_index_by_side += CURRENT_BANK << 1;
 	team += *team_index_by_side * 100;
 	return team;
 }
