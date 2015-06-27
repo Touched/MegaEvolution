@@ -10,6 +10,7 @@
 #include "strings.h"
 #include "text.h"
 #include "evo.h"
+#include "config.h"
 
 #define CURRENT_BANK (*b_attacker)
 
@@ -156,6 +157,10 @@ char *get_trainer_name() {
   }
 }
 
+u16 get_keystone_index() {
+  return 0x161;
+}
+
 void special_strcpy(u8 *dest, u8 *src) {
   u8 ch;
   u8 *data = get_pokemon_data();
@@ -186,7 +191,7 @@ void special_strcpy(u8 *dest, u8 *src) {
 	// Trainer's accessory
       case 3:
 	// TODO: Support loading accessories from a table or something
-	buf = item_name(0x161);
+	buf = item_name(get_keystone_index());
 	break;
       }
 			
