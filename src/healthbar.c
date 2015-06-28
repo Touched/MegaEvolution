@@ -3,6 +3,7 @@
 #include "common.h"
 #include "graphics.h"
 #include "mega.h"
+#include "config.h"
 #include "images/indicators.h"
 #include "images/mega_trigger.h"
 
@@ -23,19 +24,19 @@ void healthbar_indicator_callback(object *self);
 template template_indicator = {0x1234, 0x1234, &mega_indicator, 0x08231CF0, 0, 0x08231CFC, healthbar_indicator_callback};
 template template_trigger = {0x2345, 0x2345, &mega_trigger, 0x08231CF0, 0, 0x08231CFC, healthbar_trigger_callback};
 
-/*
-  I don't know how much space I can use for OAMs in battle, so it should be kept
-  to a bare minimum. If done properly, we can be sure to only use 14 tiles and 3
-  palettes.
+/* Declare the colors the trigger button ignores */
+u16 ignored_cols[TRIGGER_NUM_IGNORED_COLORS] = {
+  TRIGGER_IGNORED_COLORS
+};
 
-  2 tiles per level icon replacer - 1 for each primal orb and 1 for the keystone
-  4 tiles for per big trigger icon. We can have a max of 2 of these.
-
-  1 palette for the level icon replacers
-  1 pallete for each big trigger icon so we can change the palette to convey state
-*/
-
-
+/* Easy match function */
+u8 ignored_trigger_color(u16 color) {
+  u8 i;
+  for (i = 0; i < TRIGGER_NUM_IGNORED_COLORS; ++i) {
+    if (ignored_cols[i] == color) return 1;
+  }
+  return 0;
+}
 
 // charset: 0 - en, 1 -jp
 int font_get_width_of_string(u8 charset, char *string, u16 xcursor);
@@ -154,7 +155,7 @@ void healthbar_trigger_callback(object *self) {
     u8 i;
 		
     for(i = 1; i < 16; i++) {
-      //if (i == 0 || i == 15 || i == 3 || i == 2 || i == 8) continue;
+      if (ignored_trigger_color(mega_triggerPal[i])) continue;
 			
       if (self->private[1] == 1) {
 	pal->c[i] = calcEnabled(mega_triggerPal[i]);
