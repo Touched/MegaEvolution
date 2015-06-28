@@ -3,8 +3,8 @@
 
 /* Key stone variables */
 
-#define KEYSTONE_PLAYER_VAR 0x4001
-#define KEYSTONE_OPPONENT_VAR 0x4002
+#define KEYSTONE_PLAYER_VAR 0x4001 /* Variable that holds item index for player keystone */
+#define KEYSTONE_OPPONENT_VAR 0x4002 /* Same as above but for partner */
 #define KEYSTONE_DEFAULT 0x161	/* Default Key Stone item index */
 
 /* Ignored colours for Mega Trigger */
