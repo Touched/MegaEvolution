@@ -12,5 +12,6 @@ void ability_something(u8,u8,u8);
 void recalc_stats(u8 *data);
 char *int_to_str(char *buffer, u8 lvl, u8 a, u8 b);
 u16 *var_access(u16 index);
+u8 checkitem(u16 index, u16 quanity);
 
 #endif

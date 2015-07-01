@@ -4,6 +4,7 @@
 #include "common.h"
 #include "battle.h"
 #include "pokemon.h"
+#include "config.h"
 
 // Return all the evolution data, null otherwise
 evolution *can_mega_evolve(battle_data *pokemon) {
@@ -129,4 +130,11 @@ void reset_mega() {
   u8 i;
   for(i = 0; i < 4; ++i) megadata->done[i] = 0;
   for(i = 0; i < 4; ++i) megadata->trigger[i] = 0;
+}
+
+u8 mega_evolution_enabled() {
+  u16 *var = var_access(KEYSTONE_PLAYER_VAR);
+  if (!checkitem(*var, 1)) return 0;
+
+  return 1;
 }

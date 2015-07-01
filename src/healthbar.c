@@ -258,8 +258,10 @@ void healthbar_load_graphics(u8 state) {
       objid = template_instanciate_forward_search(&template_indicator, 0, 0, 1);
       objects[objid].private[0] = bank;
     }
-		
-    objid = template_instanciate_forward_search(&template_trigger, 130, 90, 1);
+    
+    if (mega_evolution_enabled()) {
+      objid = template_instanciate_forward_search(&template_trigger, 130, 90, 1);
+    }
   }
 }
 

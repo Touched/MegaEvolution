@@ -15,5 +15,6 @@ mega_data *megadata = (mega_data *) 0x02022B40;
 
 evolution *can_mega_evolve(battle_data *pokemon);
 u16 is_mega(battle_data *pokemon);
+u8 mega_evolution_enabled();
 
 #endif
