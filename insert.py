@@ -8,8 +8,9 @@ import binascii
 import textwrap
 import sys
 
-if int(sys.version_info.major) < 3:
-        print('Python 3.0 or later is required.')
+version = sys.version_info
+if version.major < 3 or version.minor < 4:
+        print('Python 3.4 or later is required.')
         sys.exit(1)
 
 OBJCOPY = 'arm-none-eabi-objcopy'
