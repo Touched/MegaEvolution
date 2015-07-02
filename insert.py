@@ -8,8 +8,7 @@ import binascii
 import textwrap
 import sys
 
-version = sys.version_info
-if version.major < 3 or version.minor < 4:
+if sys.version_info < (3, 4):
         print('Python 3.4 or later is required.')
         sys.exit(1)
 
