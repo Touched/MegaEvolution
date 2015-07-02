@@ -134,7 +134,9 @@ void reset_mega() {
 
 u8 mega_evolution_enabled() {
   u16 *var = var_access(KEYSTONE_PLAYER_VAR);
+#ifndef DISABLE_KEYSTONE_CHECK
   if (!checkitem(*var, 1)) return 0;
+#endif
 
   return 1;
 }

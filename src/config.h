@@ -1,6 +1,8 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
+#define DISABLE_KEYSTONE_CHECK
+
 /* Key stone variables */
 
 #define KEYSTONE_PLAYER_VAR 0x4001 /* Variable that holds item index for player keystone */

@@ -169,6 +169,13 @@ u16 get_keystone_index() {
   return item ? item : KEYSTONE_DEFAULT;
 }
 
+char *get_species_name(u8 *pokemon_data) {
+  u16 species = pokemon_getattr(pokemon_data, 0xB, 0);
+  
+  char *name = 0x08245EE0 + 0xB * species;
+  return name;
+}
+
 void special_strcpy(u8 *dest, u8 *src) {
   u8 ch;
   u8 *data = get_pokemon_data();
@@ -200,6 +207,9 @@ void special_strcpy(u8 *dest, u8 *src) {
       case 3:
 	// TODO: Support loading accessories from a table or something
 	buf = item_name(get_keystone_index());
+	break;
+      case 4:
+	buf = get_species_name(data);
 	break;
       }
 			
