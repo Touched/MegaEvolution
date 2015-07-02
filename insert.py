@@ -6,6 +6,11 @@ import sys
 import shutil
 import binascii
 import textwrap
+import sys
+
+if int(sys.version_info.major) < 3:
+        print('Python 3.0 or later is required.')
+        sys.exit(1)
 
 OBJCOPY = 'arm-none-eabi-objcopy'
 OBJDUMP = 'arm-none-eabi-objdump'
