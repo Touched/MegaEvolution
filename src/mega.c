@@ -138,3 +138,21 @@ u8 mega_evolution_enabled() {
 
   return 1;
 }
+
+/* 
+ * Pokemon cannot be given the potential to Mega Evolve during battle.
+ * You cannot give them their Mega Stone or take it away from them one the
+ * battle has started. Switcheroo and other moves will just fail.
+ */
+
+// For thief, covet, knock-off, etc.
+u8 can_remove_item(u8 bank) {
+  // Cannot remove stones held by appropriate Pokemon
+  return 0;
+}
+
+// For switcheroo, trick, bestow, etc.
+u8 can_give_item(u8 bank, u16 item) {
+  // Cannot give a Pokemon their own Mega Stone
+  return 0;
+}
