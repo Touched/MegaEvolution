@@ -157,8 +157,19 @@ char *get_trainer_name() {
   if (CURRENT_BANK & 1) {
     u16 *trainer_flag = (u16*) 0x020386AE;
     u8 *trainers = (u8*) 0x0823EAC8;
-  
-    return trainers + *trainer_flag * 0x28 + 4;
+    u8 *trainer = trainers + *trainer_flag * 0x28;
+
+#ifdef BPRE
+#ifndef NO_RIVAL_NAME_SWAP // Optional
+    // FireRed Rival Name for Champion and Rival classes
+    u8 tclass = *(trainer + 1);
+    if (tclass == 0x51 || tclass == 0x5A) {
+      return (*(u8**) 0x03005008) + 0x3A4C;
+    }
+#endif
+#endif
+
+    return trainer + 4;
   } else {
     return *((u8**) 0x0300500C);
   }

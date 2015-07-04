@@ -7,6 +7,13 @@
 #define KEYSTONE_OPPONENT_VAR 0x4002 /* Same as above but for partner */
 #define KEYSTONE_DEFAULT 0x161	/* Default Key Stone item index */
 
+/* Options */
+/* Prevent rival name being substituted in for trainer class 0x51 and 0x5A */
+// #define NO_RIVAL_NAME_SWAP
+
+/* Prevent keystone checking */
+// #define DISABLE_KEYSTONE_CHECK
+
 /* Ignored colours for Mega Trigger */
 
 #define TRIGGER_NUM_IGNORED_COLORS 0x4 /* Number of ignored colors in list below */
