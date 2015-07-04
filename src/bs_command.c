@@ -2,7 +2,8 @@
  * Custom battle script command; it handles basically the entire mega evolution
  * transformation.
  */
- 
+
+#include "mega.h" 
 #include "types.h"
 #include "common.h"
 #include "battle.h"
@@ -12,7 +13,7 @@
 #include "evo.h"
 #include "config.h"
 
-#define CURRENT_BANK (*b_attacker)
+#define CURRENT_BANK (*b_active_side)
 
 void set_species(u16 index);
 void show_message(char *buf);
@@ -43,6 +44,12 @@ void healthbar_update(u8 bank);
 void wait_for_message();
 void AGBPrint(const char *);
 void command() {
+  // Wait for other Mega Evolutions to finish
+  if (megadata->running) return;
+
+  // Stop other Mega Evolutions, it's our turn
+  megadata->running = 1;
+
   char *buffer = (char*) 0x0202298C;
   // Read species from the buffer
   evolution *evo = get_evolution_data();
@@ -225,11 +232,17 @@ void special_strcpy(u8 *dest, u8 *src) {
 }
 
 void exec_completed() {
+  megadata->running = 0;
+
   if (CURRENT_BANK & 1) {
     exec_completed_tbl2();
   } else {
     exec_completed_tbl1();
   }
+
+  // If mutliple Mega Evolutions happen in a row, this doesn't get set. So force set it
+  // TODO: Neaten up
+  *((u32*) 0x03004F84) = (0x080155c9);
 };
 
 void delay_before_end() {

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+make DEFS="-DDISABLE_KEYSTONE_CHECK" && ./insert.py

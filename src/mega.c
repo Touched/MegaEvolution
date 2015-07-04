@@ -87,6 +87,39 @@ void handle_mega_evolution() {
 
 }
 
+void handle_mega_evolutions() {
+  u8 bank, i;
+
+  u8 save = *b_active_side;
+
+  for (i = 0; i < 4; ++i) {
+    bank = i;
+
+    if (!megadata->trigger[bank]) continue;
+
+    if (megadata->done[bank & 1]) continue;
+	
+    megadata->trigger[bank] = 0;
+	
+    battle_data *data = &bdata[bank];
+    evolution *evo = can_mega_evolve(data);
+	
+    // Make sure we only mega evolve once. Primals are exempt
+    if (evo->unknown != MEGA_VARIANT_PRIMAL) {
+      megadata->done[bank & 1] = 1;
+    }
+	
+    // Null check
+    if (evo) {
+      *b_active_side = bank;
+      build_cmdbuf_mega(0, 4, (u8**) &evo);
+      *((u32*) 0x02023BC8) |= 1 << (bank);
+    }
+  }
+
+   *b_active_side = save;
+}
+
 void revert_mega(u8 *poke) {
   u16 species = 0;
   evolution *evo = *evolution_table;

@@ -8,6 +8,7 @@
 typedef struct mega_data {
   u8 trigger[4];
   u8 done[4];
+  u8 running;
 } mega_data;
 
 // Some unused RAM again
