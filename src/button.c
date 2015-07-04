@@ -13,6 +13,10 @@ void trigger_mega_evolution() {
     return;
   }
 
+  if (megadata->done) {
+    return;
+  }
+
   if (megadata->trigger[*b_current_bank]) {
     // Turn off
     play_sound(3);
