@@ -88,13 +88,13 @@ void handle_mega_evolution() {
 }
 
 void handle_mega_evolutions() {
-  u8 bank, i;
+  u8 bank;
 
   u8 save = *b_active_side;
 
-  for (i = 0; i < 4; ++i) {
-    bank = i;
+  u8 *b_attackers_in_order = (u8*) (0x02023BDE);
 
+  for (bank = 0; bank < *b_num_active_sides; ++bank) {
     if (!megadata->trigger[bank]) continue;
 
     if (megadata->done[bank & 1]) continue;
