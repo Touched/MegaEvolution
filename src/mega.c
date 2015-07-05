@@ -191,3 +191,8 @@ u8 can_give_item(u8 bank, u16 item) {
   // Cannot give a Pokemon their own Mega Stone
   return 0;
 }
+
+void mega_reset_player_triggers() {
+  megadata->trigger[0] = 0;
+  megadata->trigger[2] = 0;
+}

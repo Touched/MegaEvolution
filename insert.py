@@ -112,6 +112,7 @@ with open('test.gba', 'rb+') as rom:
         # Stupid
         hook(rom, table['create_shaker_hook'], 0x04BE80, 3)
         hook(rom, table['objc_shaker_hook'], 0x04BEDC, 2)
+        hook(rom, table['battle_menu_hook'], 0x02E438, 0)
         
         # Main
         #hook(rom, table['attack_canceller_hook'], 0x01DB00, 1)

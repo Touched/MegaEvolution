@@ -30,3 +30,16 @@
 	check_left:
 	ldr r0, =(0x0802EC38 + 1)
 	bx r0
+
+@ 0802E438 in r0
+battle_menu_hook:
+	push {r4-r7, lr}
+	mov r7, r8
+	push {r7}
+
+	bl mega_reset_player_triggers
+	
+	ldr r7, =(0x02022BC4)
+	ldr r4, =(0x0802E440 + 1)
+	bx r4
+	
