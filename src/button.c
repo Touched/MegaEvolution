@@ -13,7 +13,7 @@ void trigger_mega_evolution() {
     return;
   }
 
-  if (megadata->done) {
+  if (megadata->done[(*b_current_bank) & 1]) {
     return;
   }
 
