@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-make DEFS="-DISABLE_KEYSTONE_CHECK"
-./insert.py
