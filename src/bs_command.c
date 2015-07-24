@@ -115,9 +115,6 @@ void set_species(u16 index) {
     //*((u16*)(battle_data + 2 + i * 2)) = pokemon_getattr(data, 0x3B + i, 0);
   }
 	
-  // We need the base stats to set the rest
-  pokemon_base *base_stats = (pokemon_base*) 0x08254784;
-	
   // Set ability
   // Megas only have one ability; don't bother with the second one
   bdata->ability_id = base_stats[index].ability1;
