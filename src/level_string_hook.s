@@ -7,11 +7,6 @@
 	lsl r4, #0x18
 	lsr r4, #0x18
 	
-	ldr r0, =(0x06010340)
-	mov r1, #0
-	strh r1, [r0]
-
-	
 	@ Check if is mega
 	ldr r0, battle_data
 	
