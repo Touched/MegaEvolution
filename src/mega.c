@@ -92,8 +92,6 @@ void handle_mega_evolutions() {
 
   u8 save = *b_active_side;
 
-  u8 *b_attackers_in_order = (u8*) (0x02023BDE);
-
   for (bank = 0; bank < *b_num_active_sides; ++bank) {
     if (!megadata->trigger[bank]) continue;
 
@@ -122,9 +120,7 @@ void handle_mega_evolutions() {
 
 void revert_mega(u8 *poke) {
   u16 species = 0;
-  evolution *evo = *evolution_table;
-	
-  u16 current_species = pokemon_getattr(poke, 0xB, 0);
+  u16 current_species = (u16) (u32) pokemon_getattr(poke, 0xB, 0);
 	
   evolution *evolutions = (evolution*) ((u32) evolution_table + current_species 
 					* sizeof(evolution) * (*evos_per_poke + 1));

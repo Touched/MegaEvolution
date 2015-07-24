@@ -34,4 +34,3 @@ var_access = 0x0806E455;
 checkitem = 0x08099F41;
 
 dp11_ptr = 0x02024018;
-

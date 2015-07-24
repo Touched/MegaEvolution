@@ -21,7 +21,6 @@ u8 *get_pokemon_data();
 void buffer_str();
 void special_strcpy(u8 *dest, u8 *src);
 
-typedef void (*bxcb)(void);
 void set_b_x_callback(bxcb callback);
 
 //void move_anim_start(u8,u8,u8,u8);
@@ -43,6 +42,8 @@ void healthbar_update(u8 bank);
 
 void wait_for_message();
 void AGBPrint(const char *);
+
+extern u8 *string_buffer_maybe;
 void command() {
   // Wait for other Mega Evolutions to finish
   if (megadata->running) return;
@@ -50,7 +51,6 @@ void command() {
   // Stop other Mega Evolutions, it's our turn
   megadata->running = 1;
 
-  char *buffer = (char*) 0x0202298C;
   // Read species from the buffer
   evolution *evo = get_evolution_data();
 	
@@ -59,29 +59,20 @@ void command() {
   // Update health box (to hide level text)
   healthbar_update(CURRENT_BANK);
 	
-  // TODO: Support no message (for primals)fg
-  special_strcpy((u8*) buffer, (u8*) str_before[evo->unknown]);
-  show_message(buffer);
+  // TODO: Support no message (for primals)
+  special_strcpy((u8*) string_buffer_maybe, (u8*) str_before[evo->unknown]);
+  show_message((char*) string_buffer_maybe);
 		
   set_b_x_callback((bxcb) wait_for_message);
-	
-  //animation_script_start((u8*) 0x081D6594, 0, 1);
-	
-  //play_mega_evolution(0, 1);
-	
-  //move_anim_start(0, 0, 1, 5);
 }
 
 void ability_fix_cb() {
-  bxcb *b_c = (bxcb*) 0x03004F84;
-  bxcb *bc_backup = (bxcb*) 0x02023D78;
-	
   // Call the function that does all the work
   ((bxcb) (0x801385C + 1))();
 	
   // If this condition is true, the above callback finished and overwrote b_c
   // Restore the back up in this case
-  if (*b_c == 0x08014040 + 1) {
+  if (*b_c == (bxcb) 0x08014040 + 1) {
     *b_c = *bc_backup;
   }
 }
@@ -90,13 +81,6 @@ void ability_fix() {
   // Sets b_c to a callback that calls ability_something
   // Fixes abilities that run on enter (drought, etc.)
   // Thanks daniilS!
-  u8 **dp08_ptr = (u8**) 0x02023FE8;
-  u8 *dp08 = *dp08_ptr;
-  bxcb *b_c = (bxcb*) 0x03004F84;
-	
-  // Some unused word in the memory - pick any
-  bxcb *bc_backup = (bxcb*) 0x02023D78;
-	
   *(dp08 + 0x4C) = 0;
   *(dp08 + 0xD9) = 0;
   *(dp08 + 0xB6) = 0;
@@ -161,14 +145,14 @@ char *get_trainer_name() {
     // FireRed Rival Name for Champion and Rival classes
     u8 tclass = *(trainer + 1);
     if (tclass == 0x51 || tclass == 0x5A) {
-      return (*(u8**) 0x03005008) + 0x3A4C;
+      return (char*) (*saveblock1) + 0x3A4C;
     }
 #endif
 #endif
 
-    return trainer + 4;
+    return (char*) trainer + 4;
   } else {
-    return *((u8**) 0x0300500C);
+    return (char*) *saveblock2;
   }
 }
 
@@ -187,7 +171,7 @@ u16 get_keystone_index() {
 char *get_species_name(u8 *pokemon_data) {
   u16 species = pokemon_getattr(pokemon_data, 0xB, 0);
   
-  char *name = 0x08245EE0 + 0xB * species;
+  char *name = (char*) (0x08245EE0 + 0xB * species);
   return name;
 }
 
@@ -195,7 +179,7 @@ void special_strcpy(u8 *dest, u8 *src) {
   u8 ch;
   u8 *data = get_pokemon_data();
   char buffer[10];
-  u8* buf;
+  char* buf = 0;
 	
   battle_data *bdata = get_battle_data();
 	
@@ -205,7 +189,7 @@ void special_strcpy(u8 *dest, u8 *src) {
       switch (*src++) {
 	// Pokemon's nickname
       case 0:
-	buf = (u8*) buffer;
+	buf = (char*) buffer;
 	pokemon_getattr(data, 2, buffer);
 	break;
 	// Held item
@@ -229,7 +213,9 @@ void special_strcpy(u8 *dest, u8 *src) {
       }
 			
       // Copy smaller buffer into string
-      while ((*dest++ = *buf++) != 0xFF);
+      if(buf) {
+	while ((*dest++ = (u8) *buf++) != 0xFF);
+      }
       dest--;
     } else {
       *dest++ = ch;
@@ -334,12 +320,10 @@ void show_message(char *buf) {
 }
 
 void set_b_x_callback(bxcb callback) {
-  bxcb *bx = ((bxcb*) 0x03004FE0);
   bx[CURRENT_BANK] = callback;
 }
 
 u8 *get_pokemon_data() {
-  u8 *team_index_by_side = (u16*) 0x02023BCE;
   u8 *current_team;
 
   if (CURRENT_BANK & 1) current_team = enemy_team;

@@ -39,8 +39,6 @@ void play_mega_evolution(u8 attacker, u8 defender) {
 // Declare the functions all here because lazy
 void move_anim_task_del(u8 index);
 void refresh_graphics_maybe(u8, u8, u8);
-u8 *battle_side_objid_P_and_priv5_for_dp11b3 = 0x02023D44;
-u8 *b_anim_attacker = 0x02037F1A;
 
 typedef struct task {
   u32 function;
@@ -51,9 +49,11 @@ typedef struct task {
   u16 args[16];
 } task;
 
+typedef void (*task_func)(u8);
+
 task *tasks = (task*) 0x03005090;
-u8 task_add(void (*funcptr)(u8), u8 priority);
-u8 task_find_id_by_funcptr(void (*funcptr)(u8));
+u8 task_add(task_func, u8 priority);
+u8 task_find_id_by_funcptr(task_func);
 u8 task_is_running(u8 index);
 
 // Actual function
@@ -81,14 +81,14 @@ void task_ma_swap_sprites(u8 index) {
   case 1:
     // Actually update the sprite now
     *(u8*)(0x0202063C + s * 0x44 + 0x3E) &= 0xFB;
-    t = &tasks[task_add(0x0807331C + 1, 5)];
+    t = &tasks[task_add((task_func) 0x0807331C + 1, 5)];
     t->args[0] = 0;
     t->args[2] = *b_anim_attacker;
     next = 1;
     break;
   case 2:
     // Make sure the task is done. I'm not sure if this is necessary
-    find_index = task_find_id_by_funcptr(0x0807331C + 1);
+    find_index = task_find_id_by_funcptr((task_func) 0x0807331C + 1);
     if (!task_is_running(find_index)) {
       next = 1;
     }

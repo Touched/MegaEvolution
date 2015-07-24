@@ -4,7 +4,7 @@
 #define MSGBOX_LEN 35
 
 #define PC_BUFFER(x) 0xFD, x
-#define PC_END 0xFFF
+#define PC_END 0xFF
 #define PC_SPACE 0x0
 #define PC_NEWLINE 0xFE
 

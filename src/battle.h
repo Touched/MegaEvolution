@@ -32,17 +32,32 @@ typedef struct battle_data
 } battle_data;
 #pragma pack(pop)
 
+typedef void (*bxcb)(void);
+
 u8 *b_active_side = (u8*) 0x02023BC4;
 u8 *b_attacker = (u8*) 0x02023D6B;
 u8 *b_defender = (u8*) 0x02023D6C;
 u8 *b_current_bank = (u8*) 0x02023D6F;
-u16 *team_index_by_side = (u16*) 0x02023BCE;
 u8 *team = (u8*) 0x02024284;
 u8 *enemy_team = (u8*) 0x0202402C;
 battle_data *bdata = (battle_data *) (0x02023BE4);
 u32 *battle_type_flags = (u32*) (0x02022B4C);
 u8 *b_num_active_sides = (u8*) 0x02023BCC;
 u32 *b_x = (u32 *) 0x03004FE0;
+bxcb *b_c = (bxcb*) 0x03004F84;
+u8 **dp08_ptr = (u8**) 0x02023FE8;
+bxcb *bx = ((bxcb*) 0x03004FE0);
+u16 *team_index_by_side = (u16*) 0x02023BCE;
+u8 *battle_side_objid_P_and_priv5_for_dp11b3 = (u8*) 0x02023D44;
+u8 *b_anim_attacker = (u8*) 0x02037F1A;
+
+// u8 *b_attackers_in_order = (u8*) (0x02023BDE);
+
+#define dp08 (*dp08_ptr)
+
+// Some unused word in the memory - pick any
+// TODO: Clean up (malloc)
+bxcb *bc_backup = (bxcb*) 0x02023D78;
 
 #pragma pack(push, 1)
 typedef struct dp11b

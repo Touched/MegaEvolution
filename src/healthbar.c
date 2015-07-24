@@ -7,6 +7,8 @@
 #include "images/indicators.h"
 #include "images/mega_trigger.h"
 
+void healthbar_draw_field(u8, u8*, u8);
+
 //resource gfx_healthbar = {0x083EF524, 0x80, 0x1234};
 resource gfx_indicator = {indicatorsTiles, 0x80, 0x1234};
 resource pal_indicator = {indicatorsPal, 0x1234};
@@ -21,8 +23,11 @@ sprite mega_trigger = {0, 0x8000, 0x800, 0};
 void healthbar_trigger_callback(object *self);
 void healthbar_indicator_callback(object *self);
 
-template template_indicator = {0x1234, 0x1234, &mega_indicator, 0x08231CF0, 0, 0x08231CFC, healthbar_indicator_callback};
-template template_trigger = {0x2345, 0x2345, &mega_trigger, 0x08231CF0, 0, 0x08231CFC, healthbar_trigger_callback};
+template template_indicator = {0x1234, 0x1234, &mega_indicator, (frame **) 0x08231CF0, 
+			       0, (rotscale_frame **) 0x08231CFC, healthbar_indicator_callback};
+
+template template_trigger = {0x2345, 0x2345, &mega_trigger, (frame**) 0x08231CF0, 
+			     0, (rotscale_frame **) 0x08231CFC, healthbar_trigger_callback};
 
 /* Declare the colors the trigger button ignores */
 u16 ignored_cols[TRIGGER_NUM_IGNORED_COLORS] = {

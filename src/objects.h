@@ -64,7 +64,7 @@ typedef struct object {
 } object;
 
 typedef struct resource {
-  void *data;
+  const void *data;
   u16 size;
   u16 tag;
 } resource;
