@@ -12,6 +12,7 @@
 #include "text.h"
 #include "evo.h"
 #include "config.h"
+#include "tables.h"
 
 #define CURRENT_BANK (*b_active_side)
 
@@ -29,13 +30,13 @@ void animation_script_start(u8 *script, u8 attacker, u8 defender);
 extern void play_mega_evolution(u8 attacker, u8 defender);
 
 evolution *get_evolution_data() {
-  u8 *buffer_A = (u8*) (0x02022BC4 + CURRENT_BANK * 0x200);
+  u8 *buffer_A = (u8*) (buffer_As + CURRENT_BANK * 0x200);
   return (evolution*) (buffer_A[3] | (buffer_A[4] << 8) | (buffer_A[5] << 16) | (buffer_A[6] << 24));
 }
 
 battle_data *get_battle_data() {
   // TODO: Calculate correctnessssssss
-  return (battle_data *) (0x02023BE4 + sizeof(battle_data) * CURRENT_BANK);
+  return (battle_data *) (b_data + sizeof(battle_data) * CURRENT_BANK);
 }
 
 void healthbar_update(u8 bank);
@@ -131,13 +132,12 @@ void set_species(u16 index) {
 }
 
 char *item_name(u16 index) {
-  return (char *) (0x083DB028 + index * 0x2C);
+  return (char *) (item_names + index * 0x2C);
 }
 
 char *get_trainer_name() {
   if (CURRENT_BANK & 1) {
     u16 *trainer_flag = (u16*) 0x020386AE;
-    u8 *trainers = (u8*) 0x0823EAC8;
     u8 *trainer = trainers + *trainer_flag * 0x28;
 
 #ifdef BPRE
@@ -171,7 +171,7 @@ u16 get_keystone_index() {
 char *get_species_name(u8 *pokemon_data) {
   u16 species = pokemon_getattr(pokemon_data, 0xB, 0);
   
-  char *name = (char*) (0x08245EE0 + 0xB * species);
+  char *name = (char*) (pokemon_names + 0xB * species);
   return name;
 }
 

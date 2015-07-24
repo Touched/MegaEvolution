@@ -10,7 +10,9 @@ typedef struct evolution {
   u16 unknown;
 } evolution;
 
-evolution **evolution_table = (evolution**) 0x08259754;
+//evolution **evolution_table = (evolution**) 0x08259754;
+evolution ***evolution_table_ptr = ((evolution***) 0x08042F6C);
+#define evolution_table (*evolution_table_ptr)
 
 // an offsetstochangetonewminus1 offset in PokeRoms.ini from G3HS
 u8 *evos_per_poke = (u8*) 0x08043116; 

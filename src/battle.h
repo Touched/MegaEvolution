@@ -50,6 +50,8 @@ bxcb *bx = ((bxcb*) 0x03004FE0);
 u16 *team_index_by_side = (u16*) 0x02023BCE;
 u8 *battle_side_objid_P_and_priv5_for_dp11b3 = (u8*) 0x02023D44;
 u8 *b_anim_attacker = (u8*) 0x02037F1A;
+u8 *buffer_As = (u8*) 0x02022BC4;
+battle_data *b_data = (battle_data *) 0x02023BE4;
 
 // u8 *b_attackers_in_order = (u8*) (0x02023BDE);
 
