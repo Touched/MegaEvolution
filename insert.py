@@ -7,11 +7,27 @@ import shutil
 import binascii
 import textwrap
 import sys
+import argparse
 import patch
 
 if sys.version_info < (3, 4):
         print('Python 3.4 or later is required.')
         sys.exit(1)
+
+# Parse arguments
+parser = argparse.ArgumentParser()
+parser.add_argument('--no-patch', action='store_true', 
+                    help='disable uninstall patch generation')
+parser.add_argument('--offset', metavar='offset', type=int, 
+                    help='offset to insert at', default=0x800000)
+parser.add_argument('--input', metavar='file', 
+                    help='input filename', default='BPRE0.gba')
+parser.add_argument('--output', metavar='file', 
+                    help='output filename', default='test.gba')
+parser.add_argument('--debug', action='store_true',
+                    help='print symbol table')
+
+args = parser.parse_args()
 
 OBJCOPY = 'arm-none-eabi-objcopy'
 OBJDUMP = 'arm-none-eabi-objdump'
@@ -56,7 +72,7 @@ def symbols(subtract=0):
         return ret
         
 def insert(rom):
-        where = 0x800000
+        where = args.offset
         rom.seek(where)
         with open('build/output.bin', 'rb') as binary:
                 data = binary.read()
@@ -64,7 +80,6 @@ def insert(rom):
         return where
                        
 def hook(rom, space, hook_at, register=0):
-    with open('test.gba', 'rb+') as rom:
         # Align 2
         if hook_at & 1:
             hook_at -= 1
@@ -82,8 +97,8 @@ def hook(rom, space, hook_at, register=0):
         data += (space.to_bytes(4, 'little'))
         rom.write(bytes(data))
         
-shutil.copyfile('BPRE0.gba', 'test.gba')
-with open('test.gba', 'rb+') as rom:
+shutil.copyfile(args.input, args.output)
+with open(args.output, 'rb+') as rom:
         offset = get_text_section()
         table = symbols(offset)
         where = insert(rom)
@@ -118,29 +133,14 @@ with open('test.gba', 'rb+') as rom:
         # Main
         #hook(rom, table['attack_canceller_hook'], 0x01DB00, 1)
         hook(rom, table['bc_pre_attacks_hook'], 0x0154A0, 0)
-        
-        # FFS Copy hex
-        stupid = {
-                'anim_rainbow_y': 24,
-                'anim_rainbow_x': 106,
-                'anim_mega_stone_x': 24,
-                'anim_mega_symbol_x': 24,
-                'mega_animation_script_data': 0xAF
-        }
-        
-        for name, length in stupid.items():
-                loc = table[name]
-                #print('{} (0x{:04X}):'.format(name, loc))
-                rom.seek(loc)
-                data = rom.read(length)
-                bleh = ' '.join('{:02X}'.format(c) for c in data)
-                #print('\n'.join(textwrap.wrap(bleh)))
-                #print()
-        
-        width = max(len(key) for key in table.keys())
-        
-        for key in sorted(table.keys()):
-                print(('{:' + str(width) + '} {:08X}').format(key + ':', table[key] + 0x08000000))
-        
+
+        if args.debug:
+                width = max(len(key) for key in table.keys())
+                for key in sorted(table.keys()):
+                        fstr = ('{:' + str(width) + '} {:08X}')
+                        print(fstr.format(key + ':', table[key] + 0x08000000))
+
 # Create a patch to remove these changes
-patch.create('test.gba', 'BPRE0.gba', 'uninstall.ips', patch.ips)
+if not args.no_patch:
+        patch.create(args.output, args.input, 'uninstall.ips', patch.ips)
+
