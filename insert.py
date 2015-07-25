@@ -135,7 +135,7 @@ with open(args.output, 'rb+') as rom:
         hook(rom, table['bc_pre_attacks_hook'], 0x0154A0, 0)
 
         if args.debug:
-                width = max(len(key) for key in table.keys())
+                width = max(map(len, table.keys())) + 1
                 for key in sorted(table.keys()):
                         fstr = ('{:' + str(width) + '} {:08X}')
                         print(fstr.format(key + ':', table[key] + 0x08000000))
