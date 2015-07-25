@@ -7,6 +7,7 @@ import shutil
 import binascii
 import textwrap
 import sys
+import patch
 
 if sys.version_info < (3, 4):
         print('Python 3.4 or later is required.')
@@ -141,5 +142,5 @@ with open('test.gba', 'rb+') as rom:
         for key in sorted(table.keys()):
                 print(('{:' + str(width) + '} {:08X}').format(key + ':', table[key] + 0x08000000))
         
-        
-    
+# Create a patch to remove these changes
+patch.create('test.gba', 'BPRE0.gba', 'uninstall.ips', patch.ips)

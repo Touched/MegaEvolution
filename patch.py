@@ -17,7 +17,6 @@ def changesets(base, mod):
 
 
 def limit(changes, maxlen):
-    print (list(changes))
     for change in changes:
         if change[1] > maxlen:
             yield change[0], maxlen
@@ -52,12 +51,12 @@ def ips(base, mod):
     yield footer.encode()
         
 
-def make_patch(base_file, mod_file, patch_file):
+def create(base_file, mod_file, patch_file, gen):
     with open(base_file, 'rb') as base:
         with open(mod_file, 'rb') as modf:
             with open(patch_file, 'wb') as patch:
                 base = base.read()
                 modf = modf.read()
-                for blob in ips(base, modf):
+                for blob in gen(base, modf):
                     patch.write(blob)
     
