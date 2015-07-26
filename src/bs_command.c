@@ -36,7 +36,7 @@ evolution *get_evolution_data() {
 
 battle_data *get_battle_data() {
   // TODO: Calculate correctnessssssss
-  return (battle_data *) (b_data + sizeof(battle_data) * CURRENT_BANK);
+  return &bdata[CURRENT_BANK];
 }
 
 void healthbar_update(u8 bank);
