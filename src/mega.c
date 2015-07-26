@@ -69,7 +69,7 @@ void handle_mega_evolution() {
 	
   megadata->trigger[bank] = 0;
 	
-  battle_data *data = &bdata[bank];
+  battle_data *data = &b_data[bank];
   evolution *evo = can_mega_evolve(data);
 	
   // Make sure we only mega evolve once. Primals are exempt
@@ -99,7 +99,7 @@ void handle_mega_evolutions() {
 	
     megadata->trigger[bank] = 0;
 	
-    battle_data *data = &bdata[bank];
+    battle_data *data = &b_data[bank];
     evolution *evo = can_mega_evolve(data);
 	
     // Make sure we only mega evolve once. Primals are exempt

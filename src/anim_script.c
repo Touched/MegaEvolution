@@ -113,7 +113,7 @@ u8 *party_player = (u8*) 0x02024284;
 u8 *party_opponent = (u8*) 0x0202402C;
 
 void task_ma_cry(u8 index) {
-  u16 species = bdata[*b_anim_attacker].species;
+  u16 species = b_data[*b_anim_attacker].species;
 	
   // Play the cry and end the task immediately
   play_cry_maybe(species);

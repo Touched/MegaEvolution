@@ -5,7 +5,7 @@
 void play_sound(u16 sound_id);
 
 void trigger_mega_evolution() {
-  if (!can_mega_evolve(&bdata[*b_current_bank])) {
+  if (!can_mega_evolve(&b_data[*b_current_bank])) {
     return;
   }
 
@@ -29,7 +29,7 @@ void trigger_mega_evolution() {
 }
 
 void ai_trigger_mega_evolution() {
-  if (can_mega_evolve(&bdata[*b_current_bank])) {
+  if (can_mega_evolve(&b_data[*b_current_bank])) {
     megadata->trigger[*b_current_bank] = 1;
   }
 }

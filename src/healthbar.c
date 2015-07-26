@@ -94,7 +94,7 @@ u16 calcEnabled(u16 clra) {
 }
 
 void healthbar_trigger_callback(object *self) {
-  if (!can_mega_evolve(&bdata[*b_current_bank])) {
+  if (!can_mega_evolve(&b_data[*b_current_bank])) {
     self->x = -32;
     return;
   }
@@ -177,7 +177,7 @@ void healthbar_trigger_callback(object *self) {
 
 void healthbar_indicator_callback(object *self) {
   // Visibility
-  if (!is_mega(&bdata[self->private[0]])) {
+  if (!is_mega(&b_data[self->private[0]])) {
     self->x = -8;
     return;
   }
@@ -210,7 +210,7 @@ void healthbar_indicator_callback(object *self) {
 		
     // Convert the level to a string to get how long it is
     char buf[10];
-    battle_data *data = &bdata[self->private[0]];
+    battle_data *data = &b_data[self->private[0]];
     u8 stringlen = int_to_str(buf, data->level, 0, 3) - buf;
 		
     // The x position depends on the X origin of the healthbox as well as
