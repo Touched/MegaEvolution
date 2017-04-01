@@ -32,8 +32,35 @@ u8 anim_script[] = {
 // From anim.s
 void animation_script_start(u8 *script, u8 attacker, u8 defender);
 
+// TODO: Verify this works for all abilities that should activate upon evolution
+u8 ability_fix_cb() {
+  if (!(ability_something(0, 0, 0) << 24) ) {
+    ability_something(0, b_attackers_in_order[*(dp08 + 0x4C)], 0);
+    ability_something(9, b_attackers_in_order[*(dp08 + 0x4C)], 0);
+  }
+	
+  *b_c = *bc_backup;
+}
+
+void ability_fix() {
+  // Fixes abilities that run on enter (Drought, etc.)
+  *(dp08 + 0x4C) = 0;
+  *(dp08 + 0xD9) = 0;
+  *(dp08 + 0xB6) = 0;
+	
+  // ability_something resets b_c, so Remember the old b_c
+  *bc_backup = *b_c;
+	
+  // Use wrapper function
+  *b_c = ((bxcb) ability_fix_cb);
+}
+
 void play_mega_evolution(u8 attacker, u8 defender) {
   animation_script_start(mega_animation_script, attacker, attacker);
+
+  // Fix abilities that activate when switching (intimidate, weather abilities, etc.) 
+  // do not work
+  ability_fix(); 
 }
 
 // Declare the functions all here because lazy
