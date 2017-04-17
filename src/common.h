@@ -8,7 +8,7 @@ void pokemon_setattr(u8 *data, u8 attr, void *value);
 void gf_strcat(char *dest, char *src);
 void battle_show_message(char *msg, u8 arg);
 void ability_something_2(); 
-void ability_something(u8,u8,u8); 
+int ability_something(u8,u8,u8); 
 void recalc_stats(u8 *data);
 char *int_to_str(char *buffer, u8 lvl, u8 a, u8 b);
 u16 *var_access(u16 index);

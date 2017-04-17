@@ -66,33 +66,6 @@ void command() {
   set_b_x_callback((bxcb) wait_for_message);
 }
 
-void ability_fix_cb() {
-  // Call the function that does all the work
-  ((bxcb) (0x801385C + 1))();
-	
-  // If this condition is true, the above callback finished and overwrote b_c
-  // Restore the back up in this case
-  if (*b_c == (bxcb) 0x08014040 + 1) {
-    *b_c = *bc_backup;
-  }
-}
-
-void ability_fix() {
-  // Sets b_c to a callback that calls ability_something
-  // Fixes abilities that run on enter (drought, etc.)
-  // Thanks daniilS!
-  *(dp08 + 0x4C) = 0;
-  *(dp08 + 0xD9) = 0;
-  *(dp08 + 0xB6) = 0;
-	
-  // Fix bug introduced by this - the callback we need resets b_c
-  // Remember the old b_c
-  *bc_backup = *b_c;
-	
-  // Use wrapper function
-  *b_c = ability_fix_cb;
-}
-
 void set_species(u16 index) {
   u16 species = index;
   u8 *data = get_pokemon_data();
@@ -117,10 +90,6 @@ void set_species(u16 index) {
   // Set ability
   // Megas only have one ability; don't bother with the second one
   bdata->ability_id = base_stats[index].ability1;
-	
-  // Fix abilities that activate when switching (intimidate, weather abilities, etc.) 
-  // do not work
-  ability_fix();
 	
   // Type changes
   bdata->type1 = base_stats[index].type1;
