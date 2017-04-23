@@ -293,8 +293,7 @@ u8 *get_pokemon_data() {
 
   if (CURRENT_BANK & 1) current_team = enemy_team;
   else current_team = team;
-	
-  team_index_by_side += CURRENT_BANK << 1;
-  current_team += (*team_index_by_side) * 100;
+  
+  current_team += (team_index_by_side[CURRENT_BANK]) * 100;
   return current_team;
 }

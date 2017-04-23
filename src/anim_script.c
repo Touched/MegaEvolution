@@ -34,9 +34,9 @@ void animation_script_start(u8 *script, u8 attacker, u8 defender);
 
 // TODO: Verify this works for all abilities that should activate upon evolution
 u8 ability_fix_cb() {
-  if (!(ability_something(0, 0, 0) << 24) ) {
-    ability_something(0, b_attackers_in_order[*(dp08 + 0x4C)], 0);
-    ability_something(9, b_attackers_in_order[*(dp08 + 0x4C)], 0);
+  if (!(ability_something(0, 0, 0, 0, 0) << 24) ) {
+    ability_something(0, 0, 0, b_attackers_in_order[*(dp08 + 0x4C)], 0);
+    ability_something(9, 0, 0, b_attackers_in_order[*(dp08 + 0x4C)], 0);
   }
 	
   *b_c = *bc_backup;
