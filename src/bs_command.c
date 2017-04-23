@@ -291,9 +291,9 @@ void set_b_x_callback(bxcb callback) {
 u8 *get_pokemon_data() {
   u8 *current_team;
 
-  current_team = team;
-  if (CURRENT_BANK) current_team = enemy_team;
+  if (CURRENT_BANK & 1) current_team = enemy_team;
+  else current_team = team;
   
-  current_team += (team_index_by_side[*b_active_side]) * 100;
+  current_team += (team_index_by_side[CURRENT_BANK]) * 100;
   return current_team;
 }
